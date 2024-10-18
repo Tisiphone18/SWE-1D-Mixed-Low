@@ -2,6 +2,11 @@
 
 #include <cmath>
 
+//TODO double <-> Real Type
+//TODO const in header
+//TODO documentation
+//TODO sqrt
+
 /**
  * @brief Computes the net updates for the shallow water equations at an edge between two cells.
  *
