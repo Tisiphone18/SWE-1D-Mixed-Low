@@ -1,8 +1,9 @@
 #include "FWaveSolver.h"
 
 #include <cmath>
+#include <iostream>
 
-//TODO double <-> Real Type
+// TODO double <-> Real Type
 //TODO const in header
 //TODO documentation
 //TODO sqrt
@@ -25,7 +26,7 @@
  * @param[out] maxEdgeSpeed The maximum wave speed across the edge.
  */
 
-void FWaveSolver::computeNetUpdates(
+void Solvers::FWaveSolverStudent::computeNetUpdates(
   double hL, double hR,
   double huL, double huR,
   double bL, double bR,
