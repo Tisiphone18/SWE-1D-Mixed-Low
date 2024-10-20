@@ -38,6 +38,7 @@
 
 #include "FWaveSolver.hpp"
 #include "Solver/FWaveSolver.h"
+#include "Solver/FWaveSolverV2.hpp"
 #include "Tools/RealType.hpp"
 
 namespace Blocks {
@@ -85,7 +86,8 @@ namespace Blocks {
     RealType cellSize_;
 
     /** The solver used in computeNumericalFluxes */
-    Solvers::FWaveSolverStudent solver_;
+    Solvers::FWaveSolver<RealType> solver_;
+    Solvers::FWaveSolverStudentV2 our_solver;
 
   public:
     /**
