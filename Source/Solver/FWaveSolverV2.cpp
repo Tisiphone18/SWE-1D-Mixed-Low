@@ -39,13 +39,13 @@ RealType& maxEdgeSpeed)
   alpha2 *= inverse_mul;
 
   hNetUpdateLeft = lambda1 < 0?alpha1:0;
-  hNetUpdateLeft += lambda2 < 0?lambda2:0;
+  hNetUpdateLeft += lambda2 < 0?alpha2:0;
   huNetUpdateLeft = lambda1 < 0?lambda1*alpha1:0;
   huNetUpdateLeft += lambda2 < 0?lambda2*alpha2:0;
 
   hNetUpdateRight = lambda1 > 0?alpha1:0;
   // std::cout << "lambda" << lambda1 << ":" << lambda2 << ":" << alpha1 << std::endl;
-  hNetUpdateRight += lambda2 > 0?lambda2:0;
+  hNetUpdateRight += lambda2 > 0?alpha2:0;
   huNetUpdateRight = lambda1 > 0?lambda1*alpha1:0;
   huNetUpdateRight += lambda2 > 0?lambda2*alpha2:0;
   maxEdgeSpeed = std::fmax(std::abs(lambda1), std::abs(lambda2));

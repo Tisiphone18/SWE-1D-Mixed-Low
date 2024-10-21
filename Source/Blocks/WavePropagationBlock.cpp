@@ -78,22 +78,6 @@ RealType Blocks::WavePropagationBlock::computeNumericalFluxes() {
       huNetUpdatesRight_[i - 1],
       maxEdgeSpeed
     );
-    std::cout << "ours:" << hNetUpdatesLeft_[i - 1] << ":" << huNetUpdatesLeft_[i-1] << ":" << hNetUpdatesRight_[i - 1] << ":" << huNetUpdatesRight_[i-1] << std::endl;
-    solver_.computeNetUpdates(
-      h_[i - 1],
-      h_[i],
-      hu_[i - 1],
-      hu_[i],
-      RealType(0.0),
-      RealType(0.0), // Bathymetry
-      hNetUpdatesLeft_[i - 1],
-      hNetUpdatesRight_[i - 1],
-      huNetUpdatesLeft_[i - 1],
-      huNetUpdatesRight_[i - 1],
-      maxEdgeSpeed
-    );
-    std::cout << "thei:" << hNetUpdatesLeft_[i - 1] << ":" << huNetUpdatesLeft_[i-1] << ":" << hNetUpdatesRight_[i - 1] << ":" << huNetUpdatesRight_[i-1] << std::endl;
-
     // Update maxWaveSpeed
     if (maxEdgeSpeed > maxWaveSpeed) {
       maxWaveSpeed = maxEdgeSpeed;
