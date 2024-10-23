@@ -12,17 +12,17 @@ namespace Scenarios {
     const unsigned int size_;
     const unsigned int pos_of_problem_;
     const RealType h_;
-    const RealType uL_;
+    const RealType huL_;
 
   public:
     /**
      *
      * @param size
-     * @param pos_of_problem
+     * @param pos_of_problem position where momentum changes direction
      * @param h constant water height
-     * @param uL particle speed on the left side of the position of the problem; < 0 => RareRareProblem; > 0 => ShockShockProblem
+     * @param huL momentum of water on the left side of position of the problem; < 0 => RareRareProblem; > 0 => ShockShockProblem
      */
-ShockRareProblemScenario(unsigned int size, unsigned int pos_of_problem, RealType h, RealType uL);
+ShockRareProblemScenario(unsigned int size, unsigned int pos_of_problem, RealType h, RealType huL);
     ~ShockRareProblemScenario() = default;
 
     /**
@@ -31,14 +31,14 @@ ShockRareProblemScenario(unsigned int size, unsigned int pos_of_problem, RealTyp
     RealType getCellSize() const;
 
     /**
-     * @return Initial water height
+     * @return Initial water height (h)
      */
     RealType getHeight() const;
 
     /**
-     * @return Initial particle speed at position pos
+     * @return Initial momentum of water (hu) at position pos
      */
-    RealType getSpeed(unsigned int pos) const;
+    RealType getMomentum(unsigned int pos) const;
   };
 
 } // namespace Scenarios
