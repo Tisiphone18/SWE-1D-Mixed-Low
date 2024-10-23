@@ -39,6 +39,8 @@
 
 #include "Blocks/WavePropagationBlock.hpp"
 #include "Scenarios/DamBreakScenario.hpp"
+#include "Scenarios/ShockRareProblemScenario.hpp"
+#include "Scenarios/Scenario.hpp"
 #include "Tools/Args.hpp"
 #include "Tools/Logger.hpp"
 #include "Tools/RealType.hpp"
@@ -50,10 +52,19 @@ int main(int argc, char** argv) {
   feenableexcept(FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW);
 
   // Parse command line parameters
-  Tools::Args args(argc, argv);
+  Tools::Args                 args(argc, argv);
 
   // Scenario
-  Scenarios::DamBreakScenario scenario(args.getSize());
+  Scenarios::Scenario* scenario;
+  switch (args.getScenarioName()) {
+    default: // implicitly case 'D' as well
+      scenario = new Scenarios::DamBreakScenario(args.getSize());
+      break;
+  case 'S':
+      scenario = new Scenarios::ShockRareProblemScenario(args.getSize(), args.getSize()/2, 100.0, 10.0);
+      break;
+  }
+  // Scenarios::DamBreakScenario scenario(args.getSize());
 
   // Allocate memory
   // Water height
@@ -63,16 +74,16 @@ int main(int argc, char** argv) {
 
   // Initialize water height and momentum
   for (unsigned int i = 0; i < args.getSize() + 2; i++) {
-    h[i] = scenario.getHeight(i);
+    h[i] = scenario->getHeight(i);
+    hu[i] = scenario->getMomentum(i);
   }
-  std::memset(hu, 0, sizeof(RealType) * (args.getSize() + 2));
 
   // Create a writer that is responsible printing out values
   Writers::ConsoleWriter consoleWriter;
-  Writers::VTKWriter     vtkWriter("SWE1D", scenario.getCellSize());
+  Writers::VTKWriter     vtkWriter("SWE1D", scenario->getCellSize());
 
   // Helper class computing the wave propagation
-  Blocks::WavePropagationBlock wavePropagation(h, hu, args.getSize(), scenario.getCellSize());
+  Blocks::WavePropagationBlock wavePropagation(h, hu, args.getSize(), scenario->getCellSize());
 
   // Write initial data
   Tools::Logger::logger.info("Initial data");
@@ -85,7 +96,6 @@ int main(int argc, char** argv) {
 
   for (unsigned int i = 0; i < args.getTimeSteps(); i++) {
     // Do one time step
-
     // Update boundaries
     wavePropagation.setOutflowBoundaryConditions();
 
@@ -109,6 +119,7 @@ int main(int argc, char** argv) {
   // Free allocated memory
   delete[] h;
   delete[] hu;
+  delete scenario;
 
   return EXIT_SUCCESS;
 }

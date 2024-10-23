@@ -3,11 +3,12 @@
 //
 #pragma once
 
+#include "Scenario.hpp"
 #include "Tools/RealType.hpp"
 
 namespace Scenarios {
 
-  class ShockRareProblemScenario {
+  class ShockRareProblemScenario: public Scenario {
     /** Number of cells */
     const unsigned int size_;
     const unsigned int pos_of_problem_;
@@ -28,17 +29,17 @@ ShockRareProblemScenario(unsigned int size, unsigned int pos_of_problem, RealTyp
     /**
      * @return Cell size of one cell (= domain size/number of cells)
      */
-    RealType getCellSize() const;
+    RealType getCellSize() const override;
 
     /**
-     * @return Initial water height (h)
+     * @return Initial water height (h) at position pos
      */
-    RealType getHeight() const;
+    RealType getHeight(unsigned int pos) const override;
 
     /**
      * @return Initial momentum of water (hu) at position pos
      */
-    RealType getMomentum(unsigned int pos) const;
+    RealType getMomentum(unsigned int pos) const override;
   };
 
 } // namespace Scenarios

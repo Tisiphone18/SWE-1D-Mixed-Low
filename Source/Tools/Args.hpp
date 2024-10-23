@@ -51,6 +51,8 @@ namespace Tools {
     unsigned int size_;
     /** Number of time steps we want to simulate */
     unsigned int timeSteps_;
+    /** Scenario we want to simulate */
+    char scenarioName_;
 
     /**
      * Prints the help message, showing all available options
@@ -66,6 +68,7 @@ namespace Tools {
 
     unsigned int getSize();
     unsigned int getTimeSteps();
+    char getScenarioName();
   };
 
 } // namespace Tools

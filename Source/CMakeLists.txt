@@ -1,7 +1,4 @@
-add_library(${SWE_PROJECT_NAME} OBJECT
-        Scenarios/ShockRareProblemScenario.cpp
-        Scenarios/ShockRareProblemScenario.hpp
-)
+add_library(${SWE_PROJECT_NAME} OBJECT)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "*")
 list(FILTER SOURCES EXCLUDE REGEX ".*Main\\.cpp$")

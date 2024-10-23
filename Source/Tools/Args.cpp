@@ -42,17 +42,19 @@
 
 Tools::Args::Args(int argc, char** argv):
   size_(100),
-  timeSteps_(20.0) {
+  timeSteps_(20.0),
+  scenarioName_('D') {
 
   const struct option longOptions[] = {
     {"size", required_argument, 0, 's'},
     {"time", required_argument, 0, 't'},
+    {"scenario", required_argument, 0, 'c'},
     {"help", no_argument, 0, 'h'},
     {0, 0, 0, 0}};
 
   int                c, optionIndex;
   std::istringstream ss;
-  while ((c = getopt_long(argc, argv, "s:t:h", longOptions, &optionIndex)) >= 0) {
+  while ((c = getopt_long(argc, argv, "s:t:c:h", longOptions, &optionIndex)) >= 0) {
     switch (c) {
     case 0:
       Logger::logger.error("Could not parse command line arguments");
@@ -68,6 +70,12 @@ Tools::Args::Args(int argc, char** argv):
       ss.str(optarg);
       ss >> timeSteps_;
       std::cout << timeSteps_ << std::endl;
+      break;
+    case 'c':
+      ss.clear();
+      ss.str(optarg);
+      ss >> scenarioName_;
+      std::cout << scenarioName_ << *(&scenarioName_+1) << std::endl;
       break;
     case 'h':
       printHelpMessage();
@@ -88,10 +96,13 @@ unsigned int Tools::Args::getSize() { return size_; }
 
 unsigned int Tools::Args::getTimeSteps() { return timeSteps_; }
 
+char Tools::Args::getScenarioName() { return scenarioName_; }
+
 void Tools::Args::printHelpMessage(std::ostream& out) {
   out
     << "Usage: SWE1D [OPTIONS...]" << std::endl
     << "  -s, --size=SIZE              domain size" << std::endl
     << "  -t, --time=TIME              number of simulated time steps" << std::endl
+    << "  -c, --scenario=SCENARIO      chooses simulation scenario: [D|S] standing for DamBreak|ShockRare" << std::endl
     << "  -h, --help                   this help message" << std::endl;
 }

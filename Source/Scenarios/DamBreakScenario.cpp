@@ -41,10 +41,14 @@ Scenarios::DamBreakScenario::DamBreakScenario(unsigned int size):
 
 RealType Scenarios::DamBreakScenario::getCellSize() const { return RealType(1000) / size_; }
 
-unsigned int Scenarios::DamBreakScenario::getHeight(unsigned int pos) const {
+RealType Scenarios::DamBreakScenario::getHeight(unsigned int pos) const {
   if (pos <= size_ / 2) {
     return 15;
   }
 
   return 10;
+}
+
+RealType Scenarios::DamBreakScenario::getMomentum(unsigned int pos) const {
+  return 0.0;
 }

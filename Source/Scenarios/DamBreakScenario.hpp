@@ -36,27 +36,33 @@
 
 #pragma once
 
+#include "Scenario.hpp"
 #include "Tools/RealType.hpp"
 
 namespace Scenarios {
 
-  class DamBreakScenario {
+  class DamBreakScenario: public Scenario {
     /** Number of cells */
     const unsigned int size_;
 
   public:
     DamBreakScenario(unsigned int size);
-    ~DamBreakScenario() = default;
+    ~DamBreakScenario() override = default;
 
     /**
-     * @return Cell size of one cell (= domain size/number of cells)
-     */
-    RealType getCellSize() const;
+    * @return Cell size of one cell (= domain size/number of cells)
+    */
+    RealType getCellSize() const override;
 
     /**
      * @return Initial water height at pos
      */
-    unsigned int getHeight(unsigned int pos) const;
+    RealType getHeight(unsigned int pos) const override;
+
+    /**
+     * @return Initial momentum of water (hu) at position pos
+     */
+    RealType getMomentum(unsigned int pos) const override;
   };
 
 } // namespace Scenarios

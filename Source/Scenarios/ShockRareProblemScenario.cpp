@@ -14,7 +14,7 @@ Scenarios::ShockRareProblemScenario::ShockRareProblemScenario(const unsigned int
 
 RealType Scenarios::ShockRareProblemScenario::getCellSize() const { return RealType(1000) / size_; }
 
-RealType Scenarios::ShockRareProblemScenario::getHeight() const {
+RealType Scenarios::ShockRareProblemScenario::getHeight(unsigned int pos) const {
   return h_;
 }
 

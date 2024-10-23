@@ -85,7 +85,7 @@ namespace Blocks {
     RealType cellSize_;
 
     /** The solver used in computeNumericalFluxes */
-    Solvers::FWaveSolverStudent solver_;
+    Solvers::FWaveSolver<RealType> solver_;
 
   public:
     /**
