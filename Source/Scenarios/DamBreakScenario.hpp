@@ -43,9 +43,14 @@ namespace Scenarios {
   class DamBreakScenario {
     /** Number of cells */
     const unsigned int size_;
-
+  private:
+    RealType h_l;
+    RealType h_r;
+    RealType hu_l;
+    RealType hu_r;
   public:
     DamBreakScenario(unsigned int size);
+    DamBreakScenario(unsigned int size, RealType h_l, RealType h_r, RealType hu_l, RealType hu_r);
     ~DamBreakScenario() = default;
 
     /**
@@ -56,7 +61,9 @@ namespace Scenarios {
     /**
      * @return Initial water height at pos
      */
-    unsigned int getHeight(unsigned int pos) const;
+    double getHeight(unsigned int pos) const;
+    double getTestHeight(unsigned int pos) const;
+    double getTestMomentum(unsigned int pos) const;
   };
 
 } // namespace Scenarios

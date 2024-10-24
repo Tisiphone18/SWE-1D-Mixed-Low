@@ -44,8 +44,10 @@
 #include "Tools/RealType.hpp"
 #include "Writers/ConsoleWriter.hpp"
 #include "Writers/VTKWriter.hpp"
+#include <iomanip>
 
 int main(int argc, char** argv) {
+  std::cout << std::fixed << std::setprecision(15);
   // Triggers signals on floating point errors, i.e. prohibits quiet NaNs and alike.
   feenableexcept(FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW);
 
@@ -73,6 +75,7 @@ int main(int argc, char** argv) {
 
   // Helper class computing the wave propagation
   Blocks::WavePropagationBlock wavePropagation(h, hu, args.getSize(), scenario.getCellSize());
+  
 
   // Write initial data
   Tools::Logger::logger.info("Initial data");
