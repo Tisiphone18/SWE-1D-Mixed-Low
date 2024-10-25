@@ -40,6 +40,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "RealType.hpp"
+
 namespace Tools {
 
   /**
@@ -53,6 +55,9 @@ namespace Tools {
     unsigned int timeSteps_;
     /** Scenario we want to simulate */
     char scenarioName_;
+    /** Data to initialize basic scenarios with; format {hL, hR, huL, huR}*/
+    RealType hAndHu[4];
+
 
     /**
      * Prints the help message, showing all available options
@@ -69,6 +74,10 @@ namespace Tools {
     unsigned int getSize();
     unsigned int getTimeSteps();
     char getScenarioName();
+    RealType getHL();
+    RealType getHuL();
+    RealType getHR();
+    RealType getHuR();
   };
 
 } // namespace Tools

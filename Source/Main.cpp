@@ -58,10 +58,10 @@ int main(int argc, char** argv) {
   Scenarios::Scenario* scenario;
   switch (args.getScenarioName()) {
     default: // implicitly case 'D' as well
-      scenario = new Scenarios::DamBreakScenario(args.getSize());
+      scenario = new Scenarios::DamBreakScenario(args.getSize(), args.getHL(), args.getHR());
       break;
   case 'S':
-      scenario = new Scenarios::ShockRareProblemScenario(args.getSize(), args.getSize()/2, 100.0, 10.0);
+      scenario = new Scenarios::ShockRareProblemScenario(args.getSize(), args.getSize()/2, args.getHL(), args.getHuL());
       break;
   }
   // Scenarios::DamBreakScenario scenario(args.getSize());
