@@ -14,71 +14,75 @@ RealType& huNetUpdateLeft,
 RealType& huNetUpdateRight,
 RealType& maxEdgeSpeed)
 {
-
-  // Physical constant: gravity
-  const RealType g = 9.81; // in (m/s^2)
-
   // Compute velocity for left and right sides
-  //TODO : assert h > 0 ?
-  //assert(hL > 0 && "hL must be greater than zero to avoid division by zero.");
-  //assert(hR > 0 && "hR must be greater than zero to avoid division by zero.");
+  assert(hL > 0 && "hL must be greater than zero to avoid division by zero.");
+  assert(hR > 0 && "hR must be greater than zero to avoid division by zero.");
   RealType uL = huL/hL;
   RealType uR = huR/hR;
 
-  // Compute hRoe and uRoe
-  RealType hRoe = 0.5 * (hR + hL);
-  RealType uRoe = uL*std::sqrt(hL)+uR*std::sqrt(hR);
-  uRoe /= std::sqrt(hL)+std::sqrt(hR);
-
   // Compute Roe eigenvalues
-  RealType x = std::sqrt(g*hRoe);
-  RealType lambda1 = uRoe - x;
-  RealType lambda2 = uRoe + x;
+  RealType eigenvalues[2] = { 0.0, 0.0 };
+  computeEigenvalues(hL, hR, huL, huR, eigenvalues);
 
   // Compute flux differences (delta F)
-  RealType halfG = 0.5*g;
-  RealType deltaF[2] = {huR - huL, hR*uR*uR+halfG*hR*hR-hL*uL*uL-halfG*hL*hL};
-  //TODO : assert lambda1 != lambda2
-  //assert(lambda1 != lambda2 && "The values of the Roe eigenvalues must be different to avoid division by zero.");
-  RealType inverse_mul = 1/(lambda2 - lambda1);
+  RealType fluxDif[2] = { 0.0, 0.0 };
+  fluxDif[0] = huR - huL;
+  fluxDif[1] = huR*uR + 0.5*G*hR*hR - huL*uL - 0.5*G*hL*hL;
 
-  RealType alpha1 = lambda2*deltaF[0]-deltaF[1];
-  alpha1 *= inverse_mul;
-  RealType alpha2 = -lambda1*deltaF[0]+deltaF[1];
-  alpha2 *= inverse_mul;
+  // this assert should never fail, as hL > 0 and hR > 0 is already asserted above
+  assert(eigenvalues[0] != eigenvalues[1] && "The values of the Roe eigenvalues must be different to avoid division by zero.");
 
-  // Compute net updates for height and momentum on the left side
-  // TODO : können wir vlt vereinfachen zu :
-  //  checke ob VZ unterschiedlich von lambda 1 und lambda 2
-  //  -> falls ja so :
-  // if (lambda1 < 0) {
-  //    hNetUpdateLeft += alpha1;
-  //    huNetUpdateLeft += lambda1 * alpha1;
-  //}
-  // ...
-  // TODO : falls VZ gleich ????? -> Wie weiter ?
+  // Compute alphas
+  RealType alphas[2] = { 0.0, 0.0 };
+  RealType inverseFactor = 1/(eigenvalues[1] - eigenvalues[0]);
+  alphas[0] = eigenvalues[1]*fluxDif[0] - fluxDif[1];
+  alphas[0] *= inverseFactor;
+  alphas[1] = -eigenvalues[0]*fluxDif[0] + fluxDif[1];
+  alphas[1] *= inverseFactor;
 
-  hNetUpdateLeft = lambda1 < 0?alpha1:0;
-  hNetUpdateLeft += lambda2 < 0?alpha2:0;
-  huNetUpdateLeft = lambda1 < 0?lambda1*alpha1:0;
-  huNetUpdateLeft += lambda2 < 0?lambda2*alpha2:0;
+  // reset hNetUpdates and huNetUpdates
+  hNetUpdateLeft = hNetUpdateRight = huNetUpdateLeft = huNetUpdateRight = 0.0;
+  // Compute net updates for height and momentum for first wave
+  if (eigenvalues[0] < 0) {
+    hNetUpdateLeft += alphas[0];
+    huNetUpdateLeft += alphas[0]*eigenvalues[0];
+  } else if (eigenvalues[0] > 0) {
+    hNetUpdateRight += alphas[0];
+    huNetUpdateRight += alphas[0]*eigenvalues[0];
+  }
 
-  // Compute net updates for height and momentum on the right side
-  hNetUpdateRight = lambda1 > 0?alpha1:0;
-  // std::cout << "lambda" << lambda1 << ":" << lambda2 << ":" << alpha1 << std::endl;
-  hNetUpdateRight += lambda2 > 0?alpha2:0;
-  huNetUpdateRight = lambda1 > 0?lambda1*alpha1:0;
-  huNetUpdateRight += lambda2 > 0?lambda2*alpha2:0;
+  // Compute net updates for height and momentum for second wave
+  if (eigenvalues[1] < 0) {
+    hNetUpdateLeft += alphas[1];
+    huNetUpdateLeft += alphas[1]*eigenvalues[1];
+  } else if (eigenvalues[1] > 0) {
+    hNetUpdateRight += alphas[1];
+    huNetUpdateRight += alphas[1]*eigenvalues[1];
+  }
+
+  // Set wave speeds according to signs of eigenvalues
+  RealType waveSpeedLeft = 0.0;
+  RealType waveSpeedRight = 0.0;
+  if (eigenvalues[0] < 0 && eigenvalues[1] < 0) {
+    waveSpeedLeft = eigenvalues[0];
+  } else if (eigenvalues[0] > 0 && eigenvalues[1] > 0) {
+    waveSpeedRight = eigenvalues[1];
+  }
 
   // Compute the maximum speed
-  maxEdgeSpeed = std::fmax(std::abs(lambda1), std::abs(lambda2));
+  maxEdgeSpeed = std::fmax(std::abs(eigenvalues[0]), std::abs(eigenvalues[1]));
 
-  //TODO : CFL condition ? Stabilität im 1D : C = (u * deltaT) / (deltaX) muss kleiner als 1 sein (deltaT ≙ Zeitschritt, deltaX ≙ Ortsschritt)
-  // => u * deltaT / deltaX < CFL => u * deltaT < CFL * deltaX => deltaT < (CFL * deltaX) / u mit u ≙ max(lambda1, lambda2)
-  // => braucht zwei zusätliche Params !
-  // CFL Zahl <= 1, save value 0.5
-  // assert(deltaT < (CFL * deltaX / lambdaMax) && "The time step size or the mesh step size violate the CFL condition, causing potential instability.");
-  //vgl. https://en.wikipedia.org/wiki/Courant–Friedrichs–Lewy_condition
-  //vgl. https://www.simscale.com/blog/cfl-condition/
-  //TODO : gibts noch mehr asserts ?
+  // x(hL, hR, huL, huR, bL, bR, hNetUpdateLeft, hNetUpdateRight, huNetUpdateLeft, huNetUpdateRight, maxEdgeSpeed);
+}
+
+void Solvers::FWaveSolverStudentV2::computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]) {
+  // Compute hRoe and uRoe
+
+  RealType hRoe = 0.5 * (hL + hR);
+  RealType uRoe = (huL / std::sqrt(hL) + huR/std::sqrt(hR)) / (std::sqrt(hL) + std::sqrt(hR));
+
+  // Compute Roe eigenvalues
+  RealType sqrtGHRoe = std::sqrt(G * hRoe);
+  eigenvalues[0] = uRoe - sqrtGHRoe;
+  eigenvalues[1] = uRoe + sqrtGHRoe;
 }

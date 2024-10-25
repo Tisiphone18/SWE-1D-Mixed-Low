@@ -6,6 +6,8 @@
 namespace Solvers {
   class FWaveSolverStudentV2 {
   public:
+    // Physical constant: gravity
+    const RealType G = 9.81; // in (m/s^2)
 
 /**
  * @brief Implementation of the F-Wave Solver.
@@ -27,14 +29,26 @@ namespace Solvers {
  */
 
     void computeNetUpdates(
-      const RealType &hL, const RealType &hR,
-      const RealType &huL, const RealType &huR,
-      const RealType &bL, const RealType &bR,
+      const RealType& hL, const RealType& hR,
+      const RealType& huL, const RealType& huR,
+      const RealType& bL, const RealType& bR,
       RealType& hNetUpdateLeft,
       RealType& hNetUpdateRight,
       RealType& huNetUpdateLeft,
       RealType& huNetUpdateRight,
       RealType& maxEdgeSpeed);
+
+  private:
+    /**
+     * Compute the eigenvalues (wave speeds)
+     *
+     * @param hL Water height on left side of edge
+     * @param hR Water height on right side of edge
+     * @param huL Water momentum on left side of edge
+     * @param huR Water momentum on right side of edge
+     * @param eigenvalues will be set to: eigenvalues/wave speeds.
+     */
+    void computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]);
   };
 }
 
