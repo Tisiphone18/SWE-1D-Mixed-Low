@@ -96,6 +96,7 @@ int main(int argc, char** argv) {
 
   for (unsigned int i = 0; i < args.getTimeSteps(); i++) {
     // Do one time step
+
     // Update boundaries
     wavePropagation.setOutflowBoundaryConditions();
 
