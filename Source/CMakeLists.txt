@@ -1,6 +1,4 @@
-add_library(${SWE_PROJECT_NAME} OBJECT
-        Solver/FWaveSolverV2.cpp
-        Solver/FWaveSolverV2.hpp)
+add_library(${SWE_PROJECT_NAME} OBJECT)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "*")
 list(FILTER SOURCES EXCLUDE REGEX ".*Main\\.cpp$")
