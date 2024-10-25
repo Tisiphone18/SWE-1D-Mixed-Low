@@ -41,21 +41,33 @@
 #include "Logger.hpp"
 
 Tools::Args::Args(int argc, char** argv):
+  width_(1000.0),
   size_(100),
-  timeSteps_(20.0) {
+  timeSteps_(20.0),
+  scenarioName_('D'),
+  hAndHu(15.0, 10.0, 0.0, 0.0) {
 
   const struct option longOptions[] = {
+    {"width", required_argument, 0, 'w'},
     {"size", required_argument, 0, 's'},
     {"time", required_argument, 0, 't'},
+    {"scenario", required_argument, 0, 'S'},
+    {"data", required_argument, 0, 'd'},
     {"help", no_argument, 0, 'h'},
     {0, 0, 0, 0}};
 
   int                c, optionIndex;
   std::istringstream ss;
-  while ((c = getopt_long(argc, argv, "s:t:h", longOptions, &optionIndex)) >= 0) {
+  while ((c = getopt_long(argc, argv, "w:s:t:S:d:h", longOptions, &optionIndex)) >= 0) {
     switch (c) {
     case 0:
       Logger::logger.error("Could not parse command line arguments");
+      break;
+    case 'w':
+      ss.clear();
+      ss.str(optarg);
+      ss >> width_;
+      std::cout << width_ << std::endl;
       break;
     case 's':
       ss.clear();
@@ -69,6 +81,39 @@ Tools::Args::Args(int argc, char** argv):
       ss >> timeSteps_;
       std::cout << timeSteps_ << std::endl;
       break;
+    case 'S':
+      ss.clear();
+      ss.str(optarg);
+      ss >> scenarioName_;
+      switch (scenarioName_) {
+      default:
+        break;
+      case 'S':
+        hAndHu[0] = 40.0;
+        hAndHu[1] = 40.0;
+        hAndHu[2] = 20.0;
+        hAndHu[3] = -20.0;
+        break;
+      }
+      std::cout << scenarioName_ << std::endl;
+      break;
+    case 'd': {
+      ss.clear();
+      ss.str(optarg);
+      std::string data;
+      ss >> data;
+
+      std::istringstream iss(data);
+      unsigned int count = 0;
+      while (iss.good() && count < 4) {
+        std::string substring;
+        std::getline(iss, substring, ':');
+        hAndHu[count] = std::stod(substring);
+        count++;
+      }
+      std::cout << hAndHu[1] << std::endl;
+      break;
+    }
     case 'h':
       printHelpMessage();
       exit(0);
@@ -84,14 +129,29 @@ Tools::Args::Args(int argc, char** argv):
   }
 }
 
+RealType Tools::Args::getWidth() { return width_; }
+
 unsigned int Tools::Args::getSize() { return size_; }
 
 unsigned int Tools::Args::getTimeSteps() { return timeSteps_; }
 
+char Tools::Args::getScenarioName() { return scenarioName_; }
+
+RealType Tools::Args::getHL() { return hAndHu[0]; }
+
+RealType Tools::Args::getHR() { return hAndHu[1]; }
+
+RealType Tools::Args::getHuL() { return hAndHu[2]; }
+
+RealType Tools::Args::getHuR() { return hAndHu[3]; }
+
 void Tools::Args::printHelpMessage(std::ostream& out) {
   out
     << "Usage: SWE1D [OPTIONS...]" << std::endl
+    << "  -w, --width=WIDTH            width of simulation space" << std::endl
     << "  -s, --size=SIZE              domain size" << std::endl
     << "  -t, --time=TIME              number of simulated time steps" << std::endl
+    << "  -S, --scenario=SCENARIO      simulation scenario: [D|S] standing for DamBreak|ShockRare; default is DamBreakScenario" << std::endl
+    << "  -d, --data=DATA              data for simulation in the following format; <hL>:<hR>:<huL>:<huR> ; initialized depending on scenario" << std::endl
     << "  -h, --help                   this help message" << std::endl;
 }

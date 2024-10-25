@@ -36,15 +36,24 @@
 
 #include "DamBreakScenario.hpp"
 
-Scenarios::DamBreakScenario::DamBreakScenario(unsigned int size):
-  size_(size) {}
+#include <cassert>
 
-RealType Scenarios::DamBreakScenario::getCellSize() const { return RealType(1000) / size_; }
+Scenarios::DamBreakScenario::DamBreakScenario(const RealType width, unsigned int size, RealType hL, RealType hR):
+  width_(width),
+  size_(size),
+  hL_(hL),
+  hR_(hR) {assert(width_ > 0); assert(hL_ > 0); assert(hR_ > 0);}
 
-unsigned int Scenarios::DamBreakScenario::getHeight(unsigned int pos) const {
+RealType Scenarios::DamBreakScenario::getCellSize() const { return width_ / size_; }
+
+RealType Scenarios::DamBreakScenario::getHeight(unsigned int pos) const {
   if (pos <= size_ / 2) {
-    return 15;
+    return hL_;
   }
 
-  return 10;
+  return hR_;
+}
+
+RealType Scenarios::DamBreakScenario::getMomentum(unsigned int pos) const {
+  return 0.0;
 }
