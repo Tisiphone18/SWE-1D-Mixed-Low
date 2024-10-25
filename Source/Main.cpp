@@ -52,16 +52,16 @@ int main(int argc, char** argv) {
   feenableexcept(FE_DIVBYZERO | FE_INVALID | FE_OVERFLOW);
 
   // Parse command line parameters
-  Tools::Args                 args(argc, argv);
+  Tools::Args args(argc, argv);
 
   // Scenario
   Scenarios::Scenario* scenario;
   switch (args.getScenarioName()) {
     default: // implicitly case 'D' as well
-      scenario = new Scenarios::DamBreakScenario(args.getSize(), args.getHL(), args.getHR());
+      scenario = new Scenarios::DamBreakScenario(args.getWidth(), args.getSize(), args.getHL(), args.getHR());
       break;
   case 'S':
-      scenario = new Scenarios::ShockRareProblemScenario(args.getSize(), args.getSize()/2, args.getHL(), args.getHuL());
+      scenario = new Scenarios::ShockRareProblemScenario(args.getWidth(), args.getSize(), args.getSize()/2, args.getHL(), args.getHuL());
       break;
   }
   // Scenarios::DamBreakScenario scenario(args.getSize());

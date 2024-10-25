@@ -42,6 +42,8 @@
 namespace Scenarios {
 
   class DamBreakScenario: public Scenario {
+    /** Width of space to be simulated */
+    const RealType width_;
     /** Number of cells */
     const unsigned int size_;
     /** Initial height on left side of dam */
@@ -50,7 +52,7 @@ namespace Scenarios {
     const RealType hR_;
 
   public:
-    DamBreakScenario(unsigned int size, RealType hL, RealType hR);
+    DamBreakScenario(RealType width, unsigned int size, RealType hL, RealType hR);
     ~DamBreakScenario() override = default;
 
     /**

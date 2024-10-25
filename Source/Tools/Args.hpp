@@ -49,6 +49,8 @@ namespace Tools {
    */
   class Args {
   private:
+    /** Width of water space to be simulated */
+    RealType width_;
     /** Domain size */
     unsigned int size_;
     /** Number of time steps we want to simulate */
@@ -71,6 +73,7 @@ namespace Tools {
     Args(int argc, char** argv);
     ~Args() = default;
 
+    RealType getWidth();
     unsigned int getSize();
     unsigned int getTimeSteps();
     char getScenarioName();

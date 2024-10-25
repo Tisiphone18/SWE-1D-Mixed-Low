@@ -6,13 +6,15 @@
 
 #include <cassert>
 
-Scenarios::ShockRareProblemScenario::ShockRareProblemScenario(const unsigned int size, const unsigned int pos_of_problem, const RealType h, const RealType huL):
+Scenarios::ShockRareProblemScenario::ShockRareProblemScenario(const RealType width, const unsigned int size, const unsigned int pos_of_problem, const RealType h, const RealType huL):
+  width_(width),
   size_(size),
   pos_of_problem_(pos_of_problem),
   h_(h),
-  huL_(huL) {assert(h > 0); assert(huL != 0); assert(pos_of_problem_ < size_);}
+  huL_(huL)
+  {assert(h > 0); assert(huL != 0); assert(pos_of_problem_ < size_);}
 
-RealType Scenarios::ShockRareProblemScenario::getCellSize() const { return RealType(1000) / size_; }
+RealType Scenarios::ShockRareProblemScenario::getCellSize() const { return width_ / size_; }
 
 RealType Scenarios::ShockRareProblemScenario::getHeight(unsigned int pos) const {
   return h_;

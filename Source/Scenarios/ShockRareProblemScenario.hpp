@@ -9,21 +9,27 @@
 namespace Scenarios {
 
   class ShockRareProblemScenario: public Scenario {
+    /** Width of space to be simulated */
+    const RealType width_;
     /** Number of cells */
     const unsigned int size_;
+    /** Location of change of wave direction */
     const unsigned int pos_of_problem_;
+    /** Initial water height */
     const RealType h_;
+    /** Initial momentum of wave on left side; huR is implicitly -huL */
     const RealType huL_;
 
   public:
     /**
      *
-     * @param size
+     * @param width space to be simulated
+     * @param size number of cells
      * @param pos_of_problem position where momentum changes direction
      * @param h constant water height
      * @param huL momentum of water on the left side of position of the problem; < 0 => RareRareProblem; > 0 => ShockShockProblem
      */
-ShockRareProblemScenario(unsigned int size, unsigned int pos_of_problem, RealType h, RealType huL);
+ShockRareProblemScenario(RealType width, unsigned int size, unsigned int pos_of_problem, RealType h, RealType huL);
     ~ShockRareProblemScenario() = default;
 
     /**
