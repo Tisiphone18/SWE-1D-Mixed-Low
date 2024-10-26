@@ -50,9 +50,11 @@ namespace Scenarios {
     const RealType hL_;
     /** Initial height on right side of dam */
     const RealType hR_;
+    /** Initial particle speed on right side of dam */
+    const RealType uR_;
 
   public:
-    DamBreakScenario(RealType width, unsigned int size, RealType hL, RealType hR);
+    DamBreakScenario(RealType width, unsigned int size, RealType hL, RealType hR, RealType uR);
     ~DamBreakScenario() override = default;
 
     /**

@@ -11,8 +11,12 @@ Scenarios::ShockRareProblemScenario::ShockRareProblemScenario(const RealType wid
   size_(size),
   pos_of_problem_(pos_of_problem),
   h_(h),
-  huL_(huL)
-  {assert(h > 0); assert(huL != 0); assert(pos_of_problem_ < size_);}
+  huL_(huL) {
+    assert(width_ > 0.0 && "simulation width must be greaterthan zero");
+    assert(h > 0.0 && "height must be greater than zero");
+    assert(huL != 0.0 && "momentum cannot be zero");
+    assert(pos_of_problem_ < size_ && "position of problem must be in [0, size)");
+}
 
 RealType Scenarios::ShockRareProblemScenario::getCellSize() const { return width_ / size_; }
 

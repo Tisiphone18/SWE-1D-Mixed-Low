@@ -38,11 +38,17 @@
 
 #include <cassert>
 
-Scenarios::DamBreakScenario::DamBreakScenario(const RealType width, unsigned int size, RealType hL, RealType hR):
+Scenarios::DamBreakScenario::DamBreakScenario(const RealType width, unsigned int size, RealType hL, RealType hR, RealType uR):
   width_(width),
   size_(size),
   hL_(hL),
-  hR_(hR) {assert(width_ > 0); assert(hL_ > 0); assert(hR_ > 0);}
+  hR_(hR),
+  uR_(uR) {
+    assert(width_ > 0.0 && "simulation width must be greaterthan zero");
+    assert(hL_ > hR_ && "height on left side of dam must be greater than height on right side of dam");
+    assert(hR_ > 0.0 && "height on right side of dam must be greater than zero");
+    assert(uR_ >= 0.0 && "particle speed on right side of dam must be greater than zero");
+}
 
 RealType Scenarios::DamBreakScenario::getCellSize() const { return width_ / size_; }
 
@@ -50,10 +56,12 @@ RealType Scenarios::DamBreakScenario::getHeight(unsigned int pos) const {
   if (pos <= size_ / 2) {
     return hL_;
   }
-
   return hR_;
 }
 
 RealType Scenarios::DamBreakScenario::getMomentum(unsigned int pos) const {
-  return 0.0;
+  if (pos <= size_ / 2) {
+    return 0.0;
+  }
+  return hR_*uR_;
 }

@@ -57,8 +57,12 @@ namespace Tools {
     unsigned int timeSteps_;
     /** Scenario we want to simulate */
     char scenarioName_;
-    /** Data to initialize basic scenarios with; format {hL, hR, huL, huR}*/
-    RealType hAndHu[4];
+    /** Initial water height to initialize basic scenarios with; format {hL, hR} */
+    RealType h_[2];
+    /** Initial momentum on left side to initialize basic scenarios with */
+    RealType huL_;
+    /** Initial particle speed on right side to initialize basic scenarios with */
+    RealType uR_;
 
 
     /**
@@ -78,9 +82,9 @@ namespace Tools {
     unsigned int getTimeSteps();
     char getScenarioName();
     RealType getHL();
-    RealType getHuL();
     RealType getHR();
-    RealType getHuR();
+    RealType getHuL();
+    RealType getUR();
   };
 
 } // namespace Tools
