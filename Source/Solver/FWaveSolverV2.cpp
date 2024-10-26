@@ -61,12 +61,12 @@ RealType& maxEdgeSpeed)
   }
 
   // Set wave speeds according to signs of eigenvalues
-  RealType waveSpeedLeft = 0.0;
-  RealType waveSpeedRight = 0.0;
+  RealType waveSpeedLeft = eigenvalues[0];
+  RealType waveSpeedRight = eigenvalues[1];
   if (eigenvalues[0] < 0 && eigenvalues[1] < 0) {
-    waveSpeedLeft = eigenvalues[0];
+    waveSpeedRight = 0.0;
   } else if (eigenvalues[0] > 0 && eigenvalues[1] > 0) {
-    waveSpeedRight = eigenvalues[1];
+    waveSpeedLeft = 0.0;
   }
 
   // Compute the maximum speed
