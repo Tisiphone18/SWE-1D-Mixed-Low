@@ -1,3 +1,7 @@
+/**
+ * @file
+ */
+ 
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -43,7 +47,7 @@ RealType& maxEdgeSpeed)
 
   // reset hNetUpdates and huNetUpdates
   hNetUpdateLeft = hNetUpdateRight = huNetUpdateLeft = huNetUpdateRight = 0.0;
-  // Compute net updates for height and momentum for first wave
+  /// Compute net updates for height and momentum for first wave
   if (eigenvalues[0] < 0) {
     hNetUpdateLeft += alphas[0];
     huNetUpdateLeft += alphas[0]*eigenvalues[0];

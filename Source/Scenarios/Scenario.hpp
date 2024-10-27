@@ -1,6 +1,9 @@
-//
+/**
+ * @file
+ */
+// 
 // Created by johan on 23.10.24.
-//
+// 
 
 #pragma once
 

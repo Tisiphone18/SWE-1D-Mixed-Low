@@ -1,3 +1,7 @@
+/**
+ * @file
+ */
+
 #ifndef FWAVESOLVERV2_H
 #define FWAVESOLVERV2_H
 
