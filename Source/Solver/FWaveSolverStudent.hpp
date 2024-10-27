@@ -4,7 +4,7 @@
 #include "Tools/RealType.hpp"
 
 namespace Solvers {
-  class FWaveSolverStudentV2 {
+  class FWaveSolverStudent {
   public:
     // Physical constant: gravity
     const RealType G = 9.81; // in (m/s^2)

@@ -1,10 +1,11 @@
-#include "FWaveSolverV2.hpp"
+#include <cassert>
 #include <cmath>
 #include <iostream>
-#include <cassert>
+
+#include "FWaveSolverStudent.hpp"
 
 
-void Solvers::FWaveSolverStudentV2::computeNetUpdates(
+void Solvers::FWaveSolverStudent::computeNetUpdates(
 const RealType& hL, const RealType& hR,
 const RealType& huL, const RealType& huR,
 const RealType& bL, const RealType& bR,
@@ -75,7 +76,7 @@ RealType& maxEdgeSpeed)
   // x(hL, hR, huL, huR, bL, bR, hNetUpdateLeft, hNetUpdateRight, huNetUpdateLeft, huNetUpdateRight, maxEdgeSpeed);
 }
 
-void Solvers::FWaveSolverStudentV2::computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]) {
+void Solvers::FWaveSolverStudent::computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]) {
   // Compute hRoe and uRoe
 
   RealType hRoe = 0.5 * (hL + hR);
