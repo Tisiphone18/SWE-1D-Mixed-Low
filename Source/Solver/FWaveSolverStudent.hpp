@@ -38,7 +38,7 @@ namespace Solvers {
       RealType& huNetUpdateRight,
       RealType& maxEdgeSpeed);
 
-  private:
+  
     /**
      * Compute the eigenvalues (wave speeds)
      *
