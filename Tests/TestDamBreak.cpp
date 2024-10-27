@@ -7,7 +7,6 @@
 #include "Blocks/WavePropagationBlock.hpp"
 #include "Scenarios/DamBreakScenario.hpp"
 #include "Scenarios/ShockRareProblemScenario.hpp"
-#include "Solver/FWaveSolverV2.hpp"
 
 
 RealType testingValues[3][5] = {

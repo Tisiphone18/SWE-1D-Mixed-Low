@@ -54,7 +54,16 @@ namespace Scenarios {
     const RealType uR_;
 
   public:
-    DamBreakScenario(RealType width, unsigned int size, RealType hL, RealType hR, RealType uR);
+    /**
+     * Constructor of DamBreakScenario
+     *
+     * @param width Width of space to be simulated
+     * @param size Number of cells
+     * @param hL Initial height on left side of dam
+     * @param hR Initial height on right side of dam
+     * @param uR Initial particle speed on right side of dam
+     */
+DamBreakScenario(RealType width, unsigned int size, RealType hL, RealType hR, RealType uR);
     ~DamBreakScenario() override = default;
 
     /**
