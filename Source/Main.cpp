@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
   double t = 0;
 
   // consoleWriter.write(h, hu, args.getSize());
-  vtkWriter.write(t, h, hu, args.getSize());
+  vtkWriter.write(t, h, hu, b, args.getSize());
 
   for (unsigned int i = 0; i < args.getTimeSteps(); i++) {
     // Do one time step
@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
 
     // Write new values
     // consoleWriter.write(h, hu, args.getSize());
-    vtkWriter.write(t, h, hu, args.getSize());
+    vtkWriter.write(t, h, hu, b, args.getSize());
   }
 
   // Free allocated memory

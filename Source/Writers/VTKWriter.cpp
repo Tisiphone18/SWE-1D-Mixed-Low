@@ -60,7 +60,15 @@ Writers::VTKWriter::~VTKWriter() {
   delete vtpFile_;
 }
 
-void Writers::VTKWriter::write(const RealType time, const RealType* h, const RealType* hu, unsigned int size) {
+void Writers::VTKWriter::write(const RealType time, const RealType* h, const RealType* hu, const RealType* b, unsigned int size) {
+  // Find maximum depth (lowest bathymetry)
+  RealType maxDepth = 0.0;
+  for (unsigned int i = 1; i < size + 1; i++) {
+    if (b[i] < maxDepth) {
+      maxDepth = b[i];
+    }
+  }
+
   // Generate VTK file name
   std::string fileName = generateFileName();
 
@@ -105,7 +113,7 @@ void Writers::VTKWriter::write(const RealType time, const RealType* h, const Rea
   // Water surface height
   vtkFile << "<DataArray Name=\"h\" type=\"Float32\" format=\"ascii\">" << std::endl;
   for (unsigned int i = 1; i < size + 1; i++) {
-    vtkFile << h[i] << std::endl;
+    vtkFile << b[i]-maxDepth+h[i] << std::endl;
   }
   vtkFile << "</DataArray>" << std::endl;
 
@@ -113,6 +121,13 @@ void Writers::VTKWriter::write(const RealType time, const RealType* h, const Rea
   vtkFile << "<DataArray Name=\"hu\" type=\"Float32\" format=\"ascii\">" << std::endl;
   for (unsigned int i = 1; i < size + 1; i++) {
     vtkFile << hu[i] << std::endl;
+  }
+  vtkFile << "</DataArray>" << std::endl;
+
+  // Water surface height
+  vtkFile << "<DataArray Name=\"b\" type=\"Float32\" format=\"ascii\">" << std::endl;
+  for (unsigned int i = 1; i < size + 1; i++) {
+    vtkFile << b[i]-maxDepth << std::endl;
   }
   vtkFile << "</DataArray>" << std::endl;
 
