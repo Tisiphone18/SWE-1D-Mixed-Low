@@ -41,21 +41,37 @@
 #include "Logger.hpp"
 
 Tools::Args::Args(int argc, char** argv):
+  width_(1000.0),
   size_(100),
-  timeSteps_(20.0) {
+  timeSteps_(20.0),
+  scenarioName_('D'),
+  h_(15.0, 10.0),
+  huL_(0.0),
+  uR_(0.0) {
 
   const struct option longOptions[] = {
+    {"width", required_argument, 0, 'w'},
     {"size", required_argument, 0, 's'},
     {"time", required_argument, 0, 't'},
+    {"scenario", required_argument, 0, 'S'},
+    {"height", required_argument, 0, 'H'},
+    {"momentum", required_argument, 0, 'M'},
+    {"parVelo", required_argument, 0, 'P'},
     {"help", no_argument, 0, 'h'},
     {0, 0, 0, 0}};
 
   int                c, optionIndex;
   std::istringstream ss;
-  while ((c = getopt_long(argc, argv, "s:t:h", longOptions, &optionIndex)) >= 0) {
+  while ((c = getopt_long(argc, argv, "w:s:t:S:H:M:P:h", longOptions, &optionIndex)) >= 0) {
     switch (c) {
     case 0:
       Logger::logger.error("Could not parse command line arguments");
+      break;
+    case 'w':
+      ss.clear();
+      ss.str(optarg);
+      ss >> width_;
+      std::cout << width_ << std::endl;
       break;
     case 's':
       ss.clear();
@@ -68,6 +84,47 @@ Tools::Args::Args(int argc, char** argv):
       ss.str(optarg);
       ss >> timeSteps_;
       std::cout << timeSteps_ << std::endl;
+      break;
+    case 'S':
+      ss.clear();
+      ss.str(optarg);
+      ss >> scenarioName_;
+      switch (scenarioName_) {
+      default: // default is Dam-Break-Scenario
+        break; // Values for Dam-Break-Scenario already set in constructor
+      case 'S': // Shock-Shock/Rare-Rare
+        h_[0] = 40.0;
+        h_[1] = 40.0;
+        huL_ = 20.0;
+        break;
+      }
+      std::cout << scenarioName_ << std::endl;
+      break;
+    case 'H': {
+      ss.clear();
+      ss.str(optarg);
+      std::string data;
+      ss >> data;
+      std::istringstream iss(data);
+      unsigned int count = 0;
+      while (iss.good() && count < 2) {
+        std::string substring;
+        std::getline(iss, substring, ':');
+        h_[count] = std::stod(substring);
+        count++;
+      }
+      std::cout << h_[0] << "," << h_[1] << std::endl;
+      break;
+    }
+    case 'M':
+      ss.clear();
+      ss.str(optarg);
+      ss >> huL_;
+      break;
+    case 'P':
+      ss.clear();
+      ss.str(optarg);
+      ss >> uR_;
       break;
     case 'h':
       printHelpMessage();
@@ -84,14 +141,35 @@ Tools::Args::Args(int argc, char** argv):
   }
 }
 
+RealType Tools::Args::getWidth() { return width_; }
+
 unsigned int Tools::Args::getSize() { return size_; }
 
 unsigned int Tools::Args::getTimeSteps() { return timeSteps_; }
 
+char Tools::Args::getScenarioName() { return scenarioName_; }
+
+RealType Tools::Args::getHL() { return h_[0]; }
+
+RealType Tools::Args::getHR() { return h_[1]; }
+
+RealType Tools::Args::getHuL() { return huL_; }
+
+RealType Tools::Args::getUR() { return uR_; }
+
 void Tools::Args::printHelpMessage(std::ostream& out) {
   out
     << "Usage: SWE1D [OPTIONS...]" << std::endl
+    << "  -w, --width=WIDTH            width of simulation space" << std::endl
     << "  -s, --size=SIZE              domain size" << std::endl
     << "  -t, --time=TIME              number of simulated time steps" << std::endl
+    << "  -S, --scenario=SCENARIO      simulation scenario: [D|S] standing for DamBreak|ShockRare; default is DamBreakScenario" << std::endl
+    << "  -H, --height=HEIGHT          initial height for simulation in the following format: <hL>:<hR>"
+    << "  -M, --momentum=MOMENTUM      initial momentum of left side for simulation in the following format: <huL>,"
+    << "                                  huR is defined as -huL,"
+    << "                                  will be ignored if scenario is not Shock-Shock/Rare-Rare-Scenario"
+    << "  -P, --parVelo=PARVELO        initial particle speed of right side for simulation in the following format: <uR>,"
+    << "                                  uL is defined as 0 in DamBreakScenario,"
+    << "                                  will be ignored if scenario is not DamBreakScenario"
     << "  -h, --help                   this help message" << std::endl;
 }

@@ -40,6 +40,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "RealType.hpp"
+
 namespace Tools {
 
   /**
@@ -47,10 +49,21 @@ namespace Tools {
    */
   class Args {
   private:
+    /** Width of water space to be simulated */
+    RealType width_;
     /** Domain size */
     unsigned int size_;
     /** Number of time steps we want to simulate */
     unsigned int timeSteps_;
+    /** Scenario we want to simulate */
+    char scenarioName_;
+    /** Initial water height to initialize basic scenarios with; format {hL, hR} */
+    RealType h_[2];
+    /** Initial momentum on left side to initialize basic scenarios with */
+    RealType huL_;
+    /** Initial particle speed on right side to initialize basic scenarios with */
+    RealType uR_;
+
 
     /**
      * Prints the help message, showing all available options
@@ -64,8 +77,14 @@ namespace Tools {
     Args(int argc, char** argv);
     ~Args() = default;
 
+    RealType getWidth();
     unsigned int getSize();
     unsigned int getTimeSteps();
+    char getScenarioName();
+    RealType getHL();
+    RealType getHR();
+    RealType getHuL();
+    RealType getUR();
   };
 
 } // namespace Tools

@@ -36,27 +36,50 @@
 
 #pragma once
 
+#include "Scenario.hpp"
 #include "Tools/RealType.hpp"
 
 namespace Scenarios {
 
-  class DamBreakScenario {
+  class DamBreakScenario: public Scenario {
+    /** Width of space to be simulated */
+    const RealType width_;
     /** Number of cells */
     const unsigned int size_;
+    /** Initial height on left side of dam */
+    const RealType hL_;
+    /** Initial height on right side of dam */
+    const RealType hR_;
+    /** Initial particle speed on right side of dam */
+    const RealType uR_;
 
   public:
-    DamBreakScenario(unsigned int size);
-    ~DamBreakScenario() = default;
+    /**
+     * Constructor of DamBreakScenario
+     *
+     * @param width Width of space to be simulated
+     * @param size Number of cells
+     * @param hL Initial height on left side of dam
+     * @param hR Initial height on right side of dam
+     * @param uR Initial particle speed on right side of dam
+     */
+DamBreakScenario(RealType width, unsigned int size, RealType hL, RealType hR, RealType uR);
+    ~DamBreakScenario() override = default;
 
     /**
-     * @return Cell size of one cell (= domain size/number of cells)
-     */
-    RealType getCellSize() const;
+    * @return Cell size of one cell (= domain size/number of cells)
+    */
+    RealType getCellSize() const override;
 
     /**
      * @return Initial water height at pos
      */
-    unsigned int getHeight(unsigned int pos) const;
+    RealType getHeight(unsigned int pos) const override;
+
+    /**
+     * @return Initial momentum of water (hu) at position pos
+     */
+    RealType getMomentum(unsigned int pos) const override;
   };
 
 } // namespace Scenarios

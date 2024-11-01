@@ -65,7 +65,7 @@ RealType Blocks::WavePropagationBlock::computeNumericalFluxes() {
     RealType maxEdgeSpeed = RealType(0.0);
 
     // Compute net updates
-    solver_.computeNetUpdates(
+    our_solver.computeNetUpdates(
       h_[i - 1],
       h_[i],
       hu_[i - 1],
@@ -78,12 +78,14 @@ RealType Blocks::WavePropagationBlock::computeNumericalFluxes() {
       huNetUpdatesRight_[i - 1],
       maxEdgeSpeed
     );
-
     // Update maxWaveSpeed
     if (maxEdgeSpeed > maxWaveSpeed) {
       maxWaveSpeed = maxEdgeSpeed;
     }
+
   }
+
+  
 
   // Compute CFL condition
   RealType maxTimeStep = cellSize_ / maxWaveSpeed * RealType(0.4);

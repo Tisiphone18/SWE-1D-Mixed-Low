@@ -37,7 +37,7 @@
 #pragma once
 
 #include "FWaveSolver.hpp"
-
+#include "Solver/FWaveSolverStudent.hpp"
 #include "Tools/RealType.hpp"
 
 namespace Blocks {
@@ -86,6 +86,7 @@ namespace Blocks {
 
     /** The solver used in computeNumericalFluxes */
     Solvers::FWaveSolver<RealType> solver_;
+    Solvers::FWaveSolverStudent our_solver;
 
   public:
     /**
