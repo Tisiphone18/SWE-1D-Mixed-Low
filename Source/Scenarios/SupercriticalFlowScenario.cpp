@@ -32,7 +32,7 @@ RealType Scenarios::SupercriticalFlowScenario::getBathymetry(unsigned int pos) c
 
   //erstmal Zwischenschritte berechnen, da es davor zu Fehlern kam
   // können wir noch zusammensetzen 
-  double p = (RealType(pos)/size_*25.0 - 10.0) * (RealType(pos)/size_*25.0 - 10.0);
+  double p = (pos - 10) * (pos - 10); // TODO this is wrong as well; convert pos to spacial coordinate: RealType(pos) / size_ * 25.0 - 10.0
   double p_ = (0.05 * p);
   return -0.13 - p_;
 }
