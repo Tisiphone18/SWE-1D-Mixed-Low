@@ -71,6 +71,11 @@ namespace Blocks {
    * </pre>
    */
   class WavePropagationBlock {
+  public:
+    enum BoundaryCondition {
+      ReflectingBoundary,
+      OutflowBoundary
+    };
   private:
     RealType* h_;
     RealType* hu_;
@@ -85,6 +90,10 @@ namespace Blocks {
     unsigned int size_;
 
     RealType cellSize_;
+
+    BoundaryCondition leftBoundary_;
+    BoundaryCondition rightBoundary_;
+
 
     /** The solver used in computeNumericalFluxes */
     Solvers::FWaveSolver<RealType> solver_;
@@ -114,10 +123,26 @@ namespace Blocks {
     void updateUnknowns(RealType dt);
 
     /**
-     * Updates h and hu according to the outflow condition to both
+     * Updates h, hu and b according to the set condition on both
      * boundaries
      */
-    void setOutflowBoundaryConditions();
+    void applyBoundaryConditions();
+
+    /**
+     * Sets left boundary condition to parameter
+     *
+     * Do NOT call when simulation is running, will result in unexpected behaviour
+     * @param condition boundary condition, that should be implemented on the left border
+     */
+    void setLeftBoundaryCondition(BoundaryCondition condition);
+
+    /**
+     * Sets right boundary condition to parameter
+     *
+     * Do NOT call when simulation is running, will result in unexpected behaviour
+     * @param condition boundary condition, that should be implemented on the right border
+     */
+    void setRightBoundaryCondition(BoundaryCondition condition);
   };
 
 } // namespace Blocks

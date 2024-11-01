@@ -41,7 +41,9 @@ Blocks::WavePropagationBlock::WavePropagationBlock(RealType* h, RealType* hu, Re
   hu_(hu),
   b_(b),
   size_(size),
-  cellSize_(cellSize) {
+  cellSize_(cellSize),
+  leftBoundary_(OutflowBoundary),
+  rightBoundary_(OutflowBoundary) {
 
   // Allocate net updates
   hNetUpdatesLeft_   = new RealType[size + 1];
@@ -102,10 +104,32 @@ void Blocks::WavePropagationBlock::updateUnknowns(RealType dt) {
   }
 }
 
-void Blocks::WavePropagationBlock::setOutflowBoundaryConditions() {
-  h_[0]         = h_[1];
-  h_[size_ + 1] = h_[size_];
+void Blocks::WavePropagationBlock::applyBoundaryConditions() {
+  if (leftBoundary_ == OutflowBoundary) {
+    h_[0]         = h_[1];
+    hu_[0]         = hu_[1];
+    b_[0]         = b_[1];
+  } else if (leftBoundary_ == ReflectingBoundary) {
+    h_[0]         = h_[1];
+    hu_[0]        = -hu_[1];
+    b_[0]         = b_[1];
+  }
 
-  hu_[0]         = hu_[1];
-  hu_[size_ + 1] = hu_[size_];
+  if (rightBoundary_ == OutflowBoundary) {
+    h_[size_ + 1]         = h_[size_];
+    hu_[size_ + 1]         = hu_[size_];
+    b_[size_ + 1]         = b_[size_];
+  } else if (rightBoundary_ == ReflectingBoundary) {
+    h_[size_ + 1]         = h_[size_];
+    hu_[size_ + 1]        = -hu_[size_];
+    b_[size_ + 1]         = b_[size_];
+  }
+}
+
+void Blocks::WavePropagationBlock::setRightBoundaryCondition(BoundaryCondition condition) {
+  rightBoundary_ = condition;
+}
+
+void Blocks::WavePropagationBlock::setLeftBoundaryCondition(BoundaryCondition condition) {
+  leftBoundary_ = condition;
 }

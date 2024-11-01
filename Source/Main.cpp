@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
     // Do one time step
 
     // Update boundaries
-    wavePropagation.setOutflowBoundaryConditions();
+    wavePropagation.applyBoundaryConditions();
 
     // Compute numerical flux on each edge
     RealType maxTimeStep = wavePropagation.computeNumericalFluxes();
