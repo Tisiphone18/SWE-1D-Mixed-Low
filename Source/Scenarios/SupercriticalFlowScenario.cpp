@@ -13,7 +13,7 @@
 Scenarios::SupercriticalFlowScenario::SupercriticalFlowScenario(unsigned int size):
   size_(size){}
 
-RealType Scenarios::SupercriticalFlowScenario::getCellSize() const { return RealType(100) / size_; }
+RealType Scenarios::SupercriticalFlowScenario::getCellSize() const { return 25.0 / size_; }
 
 RealType Scenarios::SupercriticalFlowScenario::getHeight(unsigned int pos) const {
     //assert x between 0, 25 ?
