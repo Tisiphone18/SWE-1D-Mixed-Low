@@ -36,11 +36,14 @@
 
 #include "WavePropagationBlock.hpp"
 
-Blocks::WavePropagationBlock::WavePropagationBlock(RealType* h, RealType* hu, unsigned int size, RealType cellSize):
+Blocks::WavePropagationBlock::WavePropagationBlock(RealType* h, RealType* hu, RealType* b, unsigned int size, RealType cellSize):
   h_(h),
   hu_(hu),
+  b_(b),
   size_(size),
-  cellSize_(cellSize) {
+  cellSize_(cellSize),
+  leftBoundary_(OutflowBoundary),
+  rightBoundary_(OutflowBoundary) {
 
   // Allocate net updates
   hNetUpdatesLeft_   = new RealType[size + 1];
@@ -65,13 +68,13 @@ RealType Blocks::WavePropagationBlock::computeNumericalFluxes() {
     RealType maxEdgeSpeed = RealType(0.0);
 
     // Compute net updates
-    our_solver.computeNetUpdates(
+    solver_with_bathymetry_.computeNetUpdates(
       h_[i - 1],
       h_[i],
       hu_[i - 1],
       hu_[i],
-      RealType(0.0),
-      RealType(0.0), // Bathymetry
+      b_[i - 1],
+      b_[i],
       hNetUpdatesLeft_[i - 1],
       hNetUpdatesRight_[i - 1],
       huNetUpdatesLeft_[i - 1],
@@ -101,10 +104,32 @@ void Blocks::WavePropagationBlock::updateUnknowns(RealType dt) {
   }
 }
 
-void Blocks::WavePropagationBlock::setOutflowBoundaryConditions() {
-  h_[0]         = h_[1];
-  h_[size_ + 1] = h_[size_];
+void Blocks::WavePropagationBlock::applyBoundaryConditions() {
+  if (leftBoundary_ == OutflowBoundary) {
+    h_[0]         = h_[1];
+    hu_[0]         = hu_[1];
+    b_[0]         = b_[1];
+  } else if (leftBoundary_ == ReflectingBoundary) {
+    h_[0]         = h_[1];
+    hu_[0]        = -hu_[1];
+    b_[0]         = b_[1];
+  }
 
-  hu_[0]         = hu_[1];
-  hu_[size_ + 1] = hu_[size_];
+  if (rightBoundary_ == OutflowBoundary) {
+    h_[size_ + 1]         = h_[size_];
+    hu_[size_ + 1]         = hu_[size_];
+    b_[size_ + 1]         = b_[size_];
+  } else if (rightBoundary_ == ReflectingBoundary) {
+    h_[size_ + 1]         = h_[size_];
+    hu_[size_ + 1]        = -hu_[size_];
+    b_[size_ + 1]         = b_[size_];
+  }
+}
+
+void Blocks::WavePropagationBlock::setRightBoundaryCondition(BoundaryCondition condition) {
+  rightBoundary_ = condition;
+}
+
+void Blocks::WavePropagationBlock::setLeftBoundaryCondition(BoundaryCondition condition) {
+  leftBoundary_ = condition;
 }

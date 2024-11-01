@@ -223,8 +223,10 @@ TEST_CASE("testing the dam-break scenario", "[DamBreakScenario]"){
 
       RealType* h = new RealType[size + 2];
       RealType* hu = new RealType[size + 2];
+      RealType* b = new RealType[size + 2];
       unsigned int n = 199;
       for (unsigned int k = 0; k < n; k++) {
+        RealType maxDepth = std::max(testingValues[k][0], testingValues[k][1]);
         for (unsigned int j = 0; j < size + 2; j++) {
           if (j <= size/2) {
             h[j] = testingValues[k][0];
@@ -233,14 +235,15 @@ TEST_CASE("testing the dam-break scenario", "[DamBreakScenario]"){
             h[j] = testingValues[k][1];
             hu[j] = testingValues[k][3];
           }
+          b[i] = -maxDepth;
         }
-        Blocks::WavePropagationBlock wavePropagation(h, hu, size, 1000.0/size);
+        Blocks::WavePropagationBlock wavePropagation(h, hu, b, size, 1000.0/size);
         RealType hL, hR;
         hL = testingValues[k][0];
         hR = testingValues[k][1];
 
         for (unsigned int i = 0; i < 1000; i++) {
-          wavePropagation.setOutflowBoundaryConditions();
+          wavePropagation.applyBoundaryConditions();
           RealType maxTimeStep = wavePropagation.computeNumericalFluxes();
           wavePropagation.updateUnknowns(maxTimeStep);
         }
@@ -257,6 +260,7 @@ TEST_CASE("testing the dam-break scenario", "[DamBreakScenario]"){
 
       delete[] h;
       delete[] hu;
+      delete[] b;
     }
   }
 
