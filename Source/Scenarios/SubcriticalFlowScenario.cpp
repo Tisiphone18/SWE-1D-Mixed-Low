@@ -10,22 +10,22 @@
 #include <iostream>
 
 Scenarios::SubcriticalFlowScenario::SubcriticalFlowScenario(unsigned int size):
-  size_(size){}
+  size_(size) {}
 
-RealType Scenarios::SubcriticalFlowScenario::getCellSize() const { return 25.0 / size_; }
+RealType Scenarios::SubcriticalFlowScenario::getCellSize() const { return 25.0 / size_; } //TODO RealType(25.0)?
 
 RealType Scenarios::SubcriticalFlowScenario::getHeight(unsigned int pos) const {
-    //assert x between 0, 25 ?
+    // TODO assert x \el [0,size_]? imo the user should be aware of size_, as this is passed onto the constructor
   return -getBathymetry(pos);
 }
 
 RealType Scenarios::SubcriticalFlowScenario::getMomentum(unsigned int pos) const {
-  //assert x between 0, 25 ?
+  // TODO assert x \el [0,size_]? imo the user should be aware of size_, as this is passed onto the constructor
   return 4.42;
 }
 
 RealType Scenarios::SubcriticalFlowScenario::getBathymetry(unsigned int pos) const {
-  if (pos <= 8 || pos >=  12) {
+  if (pos <= 8 || pos >=  12) { // TODO this is wrong, size_ != spacial domain!: pos <= size_ * 8 / 25 || pos >= size_ * 12 / 25
     return -2;
   }
 

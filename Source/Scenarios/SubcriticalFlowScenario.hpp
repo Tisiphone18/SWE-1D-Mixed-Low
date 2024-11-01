@@ -24,7 +24,7 @@ namespace Scenarios {
      *
      * @param size Number of cells
      */
-SubcriticalFlowScenario( unsigned int size);
+    SubcriticalFlowScenario( unsigned int size);
     ~SubcriticalFlowScenario() override = default;
 
     /**
