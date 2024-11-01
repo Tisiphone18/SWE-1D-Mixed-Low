@@ -30,6 +30,12 @@ namespace Scenarios {
      * @return Initial momentum of water (hu) at position pos
      */
     virtual RealType getMomentum(unsigned int pos) const = 0;
+    /**
+     * @return Bathymetry (b) at position pos
+     */
+    virtual RealType getBathymetry(unsigned int pos) const {
+      return 0;
+    };
   };
 
 } // namespace Scenarios
