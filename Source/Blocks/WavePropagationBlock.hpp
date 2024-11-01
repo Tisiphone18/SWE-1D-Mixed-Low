@@ -38,6 +38,7 @@
 
 #include "FWaveSolver.hpp"
 #include "Solver/FWaveSolverStudent.hpp"
+#include "Solver/FWaveSolverStudentWithBathymetry.hpp"
 #include "Tools/RealType.hpp"
 
 namespace Blocks {
@@ -73,6 +74,7 @@ namespace Blocks {
   private:
     RealType* h_;
     RealType* hu_;
+    RealType* b_;
 
     RealType* hNetUpdatesLeft_;
     RealType* hNetUpdatesRight_;
@@ -87,13 +89,14 @@ namespace Blocks {
     /** The solver used in computeNumericalFluxes */
     Solvers::FWaveSolver<RealType> solver_;
     Solvers::FWaveSolverStudent our_solver;
+    Solvers::FWaveSolverStudentWithBathymetry solver_with_bathymetry_;
 
   public:
     /**
      * @param size Domain size (= number of cells) without ghost cells
      * @param cellSize Size of one cell
      */
-    WavePropagationBlock(RealType* h, RealType* hu, unsigned int size, RealType cellSize);
+    WavePropagationBlock(RealType* h, RealType* hu, RealType* b, unsigned int size, RealType cellSize);
     ~WavePropagationBlock();
 
     /**

@@ -223,6 +223,7 @@ TEST_CASE("testing the dam-break scenario", "[DamBreakScenario]"){
 
       RealType* h = new RealType[size + 2];
       RealType* hu = new RealType[size + 2];
+      RealType* b = new RealType[size + 2];
       unsigned int n = 199;
       for (unsigned int k = 0; k < n; k++) {
         for (unsigned int j = 0; j < size + 2; j++) {
@@ -234,7 +235,7 @@ TEST_CASE("testing the dam-break scenario", "[DamBreakScenario]"){
             hu[j] = testingValues[k][3];
           }
         }
-        Blocks::WavePropagationBlock wavePropagation(h, hu, size, 1000.0/size);
+        Blocks::WavePropagationBlock wavePropagation(h, hu, b, size, 1000.0/size);
         RealType hL, hR;
         hL = testingValues[k][0];
         hR = testingValues[k][1];

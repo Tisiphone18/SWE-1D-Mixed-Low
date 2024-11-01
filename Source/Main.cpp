@@ -60,22 +60,24 @@ int main(int argc, char** argv) {
     default: // implicitly case 'D' as well
       scenario = new Scenarios::DamBreakScenario(args.getWidth(), args.getSize(), args.getHL(), args.getHR(), args.getUR());
       break;
-  case 'S':
+    case 'S':
       scenario = new Scenarios::ShockRareProblemScenario(args.getWidth(), args.getSize(), args.getSize()/2, args.getHL(), args.getHuL());
       break;
   }
-  // Scenarios::DamBreakScenario scenario(args.getSize());
 
   // Allocate memory
   // Water height
   RealType* h = new RealType[args.getSize() + 2];
   // Momentum
   RealType* hu = new RealType[args.getSize() + 2];
+  // Bathymetry
+  RealType* b = new RealType[args.getSize() + 2];
 
   // Initialize water height and momentum
   for (unsigned int i = 0; i < args.getSize() + 2; i++) {
     h[i] = scenario->getHeight(i);
     hu[i] = scenario->getMomentum(i);
+    b[i] = -scenario->getHeight(i);
   }
 
   // Create a writer that is responsible printing out values
@@ -83,7 +85,7 @@ int main(int argc, char** argv) {
   Writers::VTKWriter     vtkWriter("SWE1D", scenario->getCellSize());
 
   // Helper class computing the wave propagation
-  Blocks::WavePropagationBlock wavePropagation(h, hu, args.getSize(), scenario->getCellSize());
+  Blocks::WavePropagationBlock wavePropagation(h, hu, b, args.getSize(), scenario->getCellSize());
 
   // Write initial data
   Tools::Logger::logger.info("Initial data");
@@ -120,6 +122,7 @@ int main(int argc, char** argv) {
   // Free allocated memory
   delete[] h;
   delete[] hu;
+  delete[] b;
   delete scenario;
 
   return EXIT_SUCCESS;

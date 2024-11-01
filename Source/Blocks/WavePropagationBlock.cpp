@@ -36,9 +36,10 @@
 
 #include "WavePropagationBlock.hpp"
 
-Blocks::WavePropagationBlock::WavePropagationBlock(RealType* h, RealType* hu, unsigned int size, RealType cellSize):
+Blocks::WavePropagationBlock::WavePropagationBlock(RealType* h, RealType* hu, RealType* b, unsigned int size, RealType cellSize):
   h_(h),
   hu_(hu),
+  b_(b),
   size_(size),
   cellSize_(cellSize) {
 
@@ -65,13 +66,13 @@ RealType Blocks::WavePropagationBlock::computeNumericalFluxes() {
     RealType maxEdgeSpeed = RealType(0.0);
 
     // Compute net updates
-    our_solver.computeNetUpdates(
+    solver_with_bathymetry_.computeNetUpdates(
       h_[i - 1],
       h_[i],
       hu_[i - 1],
       hu_[i],
-      RealType(0.0),
-      RealType(0.0), // Bathymetry
+      b_[i - 1],
+      b_[i],
       hNetUpdatesLeft_[i - 1],
       hNetUpdatesRight_[i - 1],
       huNetUpdatesLeft_[i - 1],
