@@ -26,13 +26,13 @@ RealType Scenarios::SupercriticalFlowScenario::getMomentum(unsigned int pos) con
 }
 
 RealType Scenarios::SupercriticalFlowScenario::getBathymetry(unsigned int pos) const {
-  if (pos <= 8 || pos >=  12) { // TODO this is wrong, size_ != spacial domain!: pos <= size_ * 8 / 25 || pos >= size_ * 12 / 25
+  if (pos <= size_ * 8 / 25 || pos >= size_ * 12 / 25) { // TODO this is wrong, size_ != spacial domain!: pos <= size_ * 8 / 25 || pos >= size_ * 12 / 25
     return -0.33;
   }
 
   //erstmal Zwischenschritte berechnen, da es davor zu Fehlern kam
   // können wir noch zusammensetzen 
-  double p = (pos - 10) * (pos - 10);
+  double p = (RealType(pos)/size_*25.0 - 10.0) * (RealType(pos)/size_*25.0 - 10.0);
   double p_ = (0.05 * p);
   return -0.13 - p_;
 }
