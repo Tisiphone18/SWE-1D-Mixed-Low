@@ -163,13 +163,17 @@ void Tools::Args::printHelpMessage(std::ostream& out) {
     << "  -w, --width=WIDTH            width of simulation space" << std::endl
     << "  -s, --size=SIZE              domain size" << std::endl
     << "  -t, --time=TIME              number of simulated time steps" << std::endl
-    << "  -S, --scenario=SCENARIO      simulation scenario: [D|S] standing for DamBreak|ShockRare; default is DamBreakScenario" << std::endl
-    << "  -H, --height=HEIGHT          initial height for simulation in the following format: <hL>:<hR>"
-    << "  -M, --momentum=MOMENTUM      initial momentum of left side for simulation in the following format: <huL>,"
-    << "                                  huR is defined as -huL,"
-    << "                                  will be ignored if scenario is not Shock-Shock/Rare-Rare-Scenario"
-    << "  -P, --parVelo=PARVELO        initial particle speed of right side for simulation in the following format: <uR>,"
-    << "                                  uL is defined as 0 in DamBreakScenario,"
-    << "                                  will be ignored if scenario is not DamBreakScenario"
+    << "  -S, --scenario=SCENARIO      simulation scenario, default is DamBreakScenario: SCENARIO can be:" << std::endl
+    << "                                  'D' : DamBreak" << std::endl
+    << "                                  'S' : Shock-Shock/Rare-Rare"<< std::endl
+    << "                                  'P' : Supercritical Flow"<< std::endl
+    << "                                  'B' : Subcritical Flow" << std::endl
+    << "  -H, --height=HEIGHT          initial height for simulation in the following format: <hL>:<hR>" << std::endl
+    << "  -M, --momentum=MOMENTUM      initial momentum of left side for simulation in the following format: <huL>," << std::endl
+    << "                                  huR is defined as -huL," << std::endl
+    << "                                  will be ignored if scenario is not Shock-Shock/Rare-Rare-Scenario" << std::endl
+    << "  -P, --parVelo=PARVELO        initial particle speed of right side for simulation in the following format: <uR>," << std::endl
+    << "                                  uL is defined as 0 in DamBreakScenario," << std::endl
+    << "                                  will be ignored if scenario is not DamBreakScenario" << std::endl
     << "  -h, --help                   this help message" << std::endl;
 }

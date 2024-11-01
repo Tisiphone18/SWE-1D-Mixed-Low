@@ -39,8 +39,10 @@
 
 #include "Blocks/WavePropagationBlock.hpp"
 #include "Scenarios/DamBreakScenario.hpp"
-#include "Scenarios/ShockRareProblemScenario.hpp"
 #include "Scenarios/Scenario.hpp"
+#include "Scenarios/ShockRareProblemScenario.hpp"
+#include "Scenarios/SubcriticalFlowScenario.hpp"
+#include "Scenarios/SupercriticalFlowScenario.hpp"
 #include "Tools/Args.hpp"
 #include "Tools/Logger.hpp"
 #include "Tools/RealType.hpp"
@@ -62,6 +64,12 @@ int main(int argc, char** argv) {
       break;
     case 'S':
       scenario = new Scenarios::ShockRareProblemScenario(args.getWidth(), args.getSize(), args.getSize()/2, args.getHL(), args.getHuL());
+      break;
+    case 'P':
+      scenario = new Scenarios::SupercriticalFlowScenario(args.getSize());
+      break;
+    case 'B':
+      scenario = new Scenarios::SubcriticalFlowScenario(args.getSize());
       break;
   }
 
