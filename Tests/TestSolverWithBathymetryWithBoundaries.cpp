@@ -19,7 +19,7 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
   const unsigned int size = 100;
   const unsigned int time = 200;
   RealType margin, actualWaterVolume;
-  const RealType relativeMargin = 0.1;
+  const RealType relativeMargin = 0.00000000001;
   RealType* h = new RealType[size + 2];
   RealType* hu = new RealType[size + 2];
   RealType* b = new RealType[size + 2];
@@ -33,6 +33,8 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       b[i] = scenario.getBathymetry(i);
       totalWaterVolume += scenario.getHeight(i);
     }
+    totalWaterVolume -= h[0];
+    totalWaterVolume -= h[size + 1];
     margin = relativeMargin * totalWaterVolume;
 
     Blocks::WavePropagationBlock wavePropagation(h, hu, b, size, scenario.getCellSize());
@@ -44,7 +46,7 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       wavePropagation.updateUnknowns(maxTimeStep);
 
       actualWaterVolume = 0.0;
-      for (unsigned int k = 0; k < size + 2; k++) {
+      for (unsigned int k = 1; k < size + 1; k++) {
         actualWaterVolume += h[k];
       }
       REQUIRE_THAT(actualWaterVolume, Catch::Matchers::WithinAbs(totalWaterVolume, margin));
@@ -60,6 +62,8 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       b[i] = scenario.getBathymetry(i);
       totalWaterVolume += scenario.getHeight(i);
     }
+    totalWaterVolume -= h[0];
+    totalWaterVolume -= h[size + 1];
     margin = relativeMargin * totalWaterVolume;
 
     Blocks::WavePropagationBlock wavePropagation(h, hu, b, size, scenario.getCellSize());
@@ -71,7 +75,7 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       wavePropagation.updateUnknowns(maxTimeStep);
 
       actualWaterVolume = 0.0;
-      for (unsigned int k = 0; k < size + 2; k++) {
+      for (unsigned int k = 1; k < size + 1; k++) {
         actualWaterVolume += h[k];
       }
       REQUIRE_THAT(actualWaterVolume, Catch::Matchers::WithinAbs(totalWaterVolume, margin));
@@ -87,6 +91,8 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       b[i] = scenario.getBathymetry(i);
       totalWaterVolume += scenario.getHeight(i);
     }
+    totalWaterVolume -= h[0];
+    totalWaterVolume -= h[size + 1];
     margin = relativeMargin * totalWaterVolume;
 
     Blocks::WavePropagationBlock wavePropagation(h, hu, b, size, scenario.getCellSize());
@@ -98,7 +104,7 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       wavePropagation.updateUnknowns(maxTimeStep);
 
       actualWaterVolume = 0.0;
-      for (unsigned int k = 0; k < size + 2; k++) {
+      for (unsigned int k = 1; k < size + 1; k++) {
         actualWaterVolume += h[k];
       }
       REQUIRE_THAT(actualWaterVolume, Catch::Matchers::WithinAbs(totalWaterVolume, margin));
@@ -114,6 +120,8 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       b[i] = scenario.getBathymetry(i);
       totalWaterVolume += scenario.getHeight(i);
     }
+    totalWaterVolume -= h[0];
+    totalWaterVolume -= h[size + 1];
     margin = relativeMargin * totalWaterVolume;
 
     Blocks::WavePropagationBlock wavePropagation(h, hu, b, size, scenario.getCellSize());
@@ -125,7 +133,7 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       wavePropagation.updateUnknowns(maxTimeStep);
 
       actualWaterVolume = 0.0;
-      for (unsigned int k = 0; k < size + 2; k++) {
+      for (unsigned int k = 1; k < size + 1; k++) {
         actualWaterVolume += h[k];
       }
       REQUIRE_THAT(actualWaterVolume, Catch::Matchers::WithinAbs(totalWaterVolume, margin));
@@ -133,7 +141,6 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
   }
 
   SECTION("wavy ground scenario") {
-
     RealType width = 500.0;
     Scenarios::ShockRareProblemScenario scenario(width, size, size/3, 100.0, 20.0);
     RealType totalWaterVolume = 0.0;
@@ -145,6 +152,8 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       b[i] = -b_;
       totalWaterVolume += b_;
     }
+    totalWaterVolume -= h[0];
+    totalWaterVolume -= h[size + 1];
     margin = relativeMargin * totalWaterVolume;
 
     Blocks::WavePropagationBlock wavePropagation(h, hu, b, size, scenario.getCellSize());
@@ -155,7 +164,7 @@ TEST_CASE("Ensure that total water volume stays the same with reflecting boundar
       RealType maxTimeStep = wavePropagation.computeNumericalFluxes();
       wavePropagation.updateUnknowns(maxTimeStep);
       actualWaterVolume = 0.0;
-      for (unsigned int k = 0; k < size + 2; k++) {
+      for (unsigned int k = 1; k < size + 1; k++) {
         actualWaterVolume += h[k];
       }
       REQUIRE_THAT(actualWaterVolume, Catch::Matchers::WithinAbs(totalWaterVolume, margin));
