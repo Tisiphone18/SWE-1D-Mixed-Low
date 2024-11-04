@@ -6,8 +6,6 @@
 
 #include "Blocks/WavePropagationBlock.hpp"
 #include "catch2/internal/catch_reporter_spec_parser.hpp"
-#include "Scenarios/DamBreakScenario.hpp"
-#include "Scenarios/ShockRareProblemScenario.hpp"
 #include "Tools/Parser.hpp"
 
 
@@ -217,17 +215,15 @@ RealType testingValues[199][5] = {
 
 TEST_CASE("testing the dam-break scenario", "[DamBreakScenario]"){
   SECTION("Test the Middle State") {
-
-    for(int i = 0; i<3; i++){
-      unsigned int size = 1000;
+      size_t size = 1000;
 
       RealType* h = new RealType[size + 2];
       RealType* hu = new RealType[size + 2];
-      RealType* b = new RealType[size + 2];
-      unsigned int n = 199;
-      for (unsigned int k = 0; k < n; k++) {
+      RealType* b  = new RealType[size + 2];
+      const size_t n = 199;
+      for (size_t k = 0; k < n; k++) {
         RealType maxDepth = std::max(testingValues[k][0], testingValues[k][1]);
-        for (unsigned int j = 0; j < size + 2; j++) {
+        for (size_t j = 0; j < size + 2; j++) {
           if (j <= size/2) {
             h[j] = testingValues[k][0];
             hu[j] = testingValues[k][2];
@@ -235,12 +231,11 @@ TEST_CASE("testing the dam-break scenario", "[DamBreakScenario]"){
             h[j] = testingValues[k][1];
             hu[j] = testingValues[k][3];
           }
-          b[i] = -maxDepth;
+          b[j] = -maxDepth;
         }
-        Blocks::WavePropagationBlock wavePropagation(h, hu, b, size, 1000.0/size);
-        RealType hL, hR;
-        hL = testingValues[k][0];
-        hR = testingValues[k][1];
+        Blocks::WavePropagationBlock wavePropagation(h, hu, b, size, 1000.0/RealType(size));
+        RealType hL = testingValues[k][0];
+        RealType hR = testingValues[k][1];
 
         for (unsigned int i = 0; i < 1000; i++) {
           wavePropagation.applyBoundaryConditions();
@@ -254,15 +249,12 @@ TEST_CASE("testing the dam-break scenario", "[DamBreakScenario]"){
         } else {
           margin = 0.001*std::fabs(hL-hR);
         }
-        std::cout << margin << ":" << h[size/2] << ":" << testingValues[k][4] << std::endl;
         REQUIRE_THAT(h[size/2], Catch::Matchers::WithinAbs(testingValues[k][4], margin));
       }
 
       delete[] h;
       delete[] hu;
       delete[] b;
-    }
   }
-
 }
 
