@@ -8,7 +8,10 @@
 
 #include "FWaveSolverStudentWithBathymetry.hpp"
 
-
+/**
+ * @brief Computation of the computeNetUpdates. Calls the functions to compute the eignevalues, flux differences, alphas, netUpdates and waveSpeed. 
+ * Can handle bathymetry
+ */
 void Solvers::FWaveSolverStudentWithBathymetry::computeNetUpdates(
 const RealType& hL, const RealType& hR,
 const RealType& huL, const RealType& huR,
@@ -29,28 +32,75 @@ RealType& maxEdgeSpeed)
   RealType eigenvalues[2] = { 0.0, 0.0 };
   computeEigenvalues(hL, hR, huL, huR, eigenvalues);
 
-  // Compute Psi for lux difference
-  RealType psi = -0.5*G*(bR - bL)*(hL + hR);
   // Compute flux differences (delta F)
   RealType fluxDif[2] = { 0.0, 0.0 };
-  fluxDif[0] = huR - huL;
-  fluxDif[1] = huR*uR + 0.5*G*hR*hR - huL*uL - 0.5*G*hL*hL;
-  fluxDif[1] -= psi;
-
+  computeFluxDifferences(hL, hR, huL, huR, uL, uR, bL, bR, fluxDif);
+  
   // this assert should never fail, as hL > 0 and hR > 0 is already asserted above
   assert(eigenvalues[0] != eigenvalues[1] && "The values of the Roe eigenvalues must be different to avoid division by zero.");
 
   // Compute alphas
   RealType alphas[2] = { 0.0, 0.0 };
+  computeAlphas(alphas, fluxDif, eigenvalues);
+
+  // reset hNetUpdates and huNetUpdates
+  hNetUpdateLeft = hNetUpdateRight = huNetUpdateLeft = huNetUpdateRight = 0.0;
+  /// Compute net updates for height and momentum for first wave
+  calculateNetUpdates(hNetUpdateLeft, hNetUpdateRight, huNetUpdateLeft, huNetUpdateRight, alphas, eigenvalues);
+
+  RealType waveSpeedLeft = 0;
+  RealType waveSpeedRight = 0;
+  calculateWaveSped(waveSpeedLeft, waveSpeedRight, eigenvalues);
+  // Set wave speeds according to signs of eigenvalues
+  
+  // Compute the maximum speed
+  maxEdgeSpeed = std::fmax(std::abs(eigenvalues[0]), std::abs(eigenvalues[1]));
+
+  // x(hL, hR, huL, huR, bL, bR, hNetUpdateLeft, hNetUpdateRight, huNetUpdateLeft, huNetUpdateRight, maxEdgeSpeed);
+}
+
+/**
+ * @brief Computation of the Roe eigenvalues
+ */
+void Solvers::FWaveSolverStudentWithBathymetry::computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]) {
+  // Compute hRoe and uRoe
+
+  RealType hRoe = 0.5 * (hL + hR);
+  RealType uRoe = (huL / std::sqrt(hL) + huR/std::sqrt(hR)) / (std::sqrt(hL) + std::sqrt(hR));
+
+  // Compute Roe eigenvalues
+  RealType sqrtGHRoe = std::sqrt(G * hRoe);
+  eigenvalues[0] = uRoe - sqrtGHRoe;
+  eigenvalues[1] = uRoe + sqrtGHRoe;
+}
+
+/**
+ * @brief Computation of the Delta of the Flux function. Includes the effect of the bathymetry psi.
+ */
+void Solvers::FWaveSolverStudentWithBathymetry::computeFluxDifferences(RealType hL, RealType hR, RealType huL, RealType huR, RealType uL, RealType uR, RealType bL, RealType bR, RealType fluxDif[2]) {
+  RealType G = 9.81;
+  // Compute Psi for lux difference
+  RealType psi = -0.5*G*(bR - bL)*(hL + hR);
+  fluxDif[0] = huR - huL;
+  fluxDif[1] = huR*uR + 0.5*G*hR*hR - huL*uL - 0.5*G*hL*hL;
+  fluxDif[1] -= psi;
+}
+
+/**
+ * @brief Computation of the Alphas. Later used for computing the net Updates
+ */
+void Solvers::FWaveSolverStudentWithBathymetry::computeAlphas(RealType alphas[2], RealType fluxDif[2], RealType eigenvalues[2]) {
   RealType inverseFactor = 1/(eigenvalues[1] - eigenvalues[0]);
   alphas[0] = eigenvalues[1]*fluxDif[0] - fluxDif[1];
   alphas[0] *= inverseFactor;
   alphas[1] = -eigenvalues[0]*fluxDif[0] + fluxDif[1];
   alphas[1] *= inverseFactor;
+}
 
-  // reset hNetUpdates and huNetUpdates
-  hNetUpdateLeft = hNetUpdateRight = huNetUpdateLeft = huNetUpdateRight = 0.0;
-  /// Compute net updates for height and momentum for first wave
+/**
+ * @brief Computation of the Net Updates for the left and right Height and left and right Momentum
+ */
+void Solvers::FWaveSolverStudentWithBathymetry::calculateNetUpdates(RealType& hNetUpdateLeft, RealType& hNetUpdateRight, RealType& huNetUpdateLeft, RealType& huNetUpdateRight,RealType alphas[2], RealType eigenvalues[2]) {
   if (eigenvalues[0] < 0) {
     hNetUpdateLeft += alphas[0];
     huNetUpdateLeft += alphas[0]*eigenvalues[0];
@@ -68,29 +118,17 @@ RealType& maxEdgeSpeed)
     huNetUpdateRight += alphas[1]*eigenvalues[1];
   }
 
-  // Set wave speeds according to signs of eigenvalues
-  RealType waveSpeedLeft = eigenvalues[0];
-  RealType waveSpeedRight = eigenvalues[1];
+}
+
+/**
+ * @brief Computation of the wave speed. Dealing also with supersonic problems
+ */
+void Solvers::FWaveSolverStudentWithBathymetry::calculateWaveSped(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]) {
+  waveSpeedLeft = eigenvalues[0];
+  waveSpeedRight = eigenvalues[1];
   if (eigenvalues[0] < 0 && eigenvalues[1] < 0) {
     waveSpeedRight = 0.0;
   } else if (eigenvalues[0] > 0 && eigenvalues[1] > 0) {
     waveSpeedLeft = 0.0;
   }
-
-  // Compute the maximum speed
-  maxEdgeSpeed = std::fmax(std::abs(eigenvalues[0]), std::abs(eigenvalues[1]));
-
-  // x(hL, hR, huL, huR, bL, bR, hNetUpdateLeft, hNetUpdateRight, huNetUpdateLeft, huNetUpdateRight, maxEdgeSpeed);
-}
-
-void Solvers::FWaveSolverStudentWithBathymetry::computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]) {
-  // Compute hRoe and uRoe
-
-  RealType hRoe = 0.5 * (hL + hR);
-  RealType uRoe = (huL / std::sqrt(hL) + huR/std::sqrt(hR)) / (std::sqrt(hL) + std::sqrt(hR));
-
-  // Compute Roe eigenvalues
-  RealType sqrtGHRoe = std::sqrt(G * hRoe);
-  eigenvalues[0] = uRoe - sqrtGHRoe;
-  eigenvalues[1] = uRoe + sqrtGHRoe;
 }

@@ -41,7 +41,6 @@ namespace Solvers {
       RealType& huNetUpdateRight,
       RealType& maxEdgeSpeed);
 
-  
     /**
      * Compute the eigenvalues (wave speeds)
      *
@@ -52,5 +51,10 @@ namespace Solvers {
      * @param eigenvalues will be set to: eigenvalues/wave speeds.
      */
     void computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]);
+    void computeAlphas(RealType alphas[2], RealType fluxDif[2], RealType eigenvalues[2]);
+    void computeFluxDifferences(RealType hL, RealType hR, RealType huL, RealType huR, RealType uL, RealType uR, RealType bL, RealType bR, RealType fluxDif[2]);
+    void calculateNetUpdates(RealType& hNetUpdateLeft, RealType& hNetUpdateRight, RealType& huNetUpdateLeft, RealType& huNetUpdateRight,RealType alphas[2], RealType eigenvalues[2]);
+    void calculateWaveSped(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]);
+
   };
 }
