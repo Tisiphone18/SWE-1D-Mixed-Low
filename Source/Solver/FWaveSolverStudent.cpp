@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file FWaveSolverStudent.cpp
  */
  
 #include <cassert>
@@ -9,10 +9,6 @@
 #include "FWaveSolverStudent.hpp"
 
 
-/**
- * @brief Computation of the computeNetUpdates. Calls the functions to compute the eignevalues, flux differences, alphas, netUpdates and waveSpeed. 
- * Does not deal with bathymetry
- */
 void Solvers::FWaveSolverStudent::computeNetUpdates(
 const RealType& hL, const RealType& hR,
 const RealType& huL, const RealType& huR,
@@ -50,8 +46,8 @@ RealType& maxEdgeSpeed)
   calculateNetUpdates(hNetUpdateLeft, hNetUpdateRight, huNetUpdateLeft, huNetUpdateRight, alphas, eigenvalues);
 
   // Set wave speeds according to signs of eigenvalues
-  RealType waveSpeedLeft = 0;
-  RealType waveSpeedRight = 0;
+  RealType waveSpeedLeft = 0.0;
+  RealType waveSpeedRight = 0.0;
   calculateWaveSped(waveSpeedLeft, waveSpeedRight, eigenvalues);
   // Compute the maximum speed
   maxEdgeSpeed = std::fmax(std::abs(eigenvalues[0]), std::abs(eigenvalues[1]));
@@ -59,9 +55,7 @@ RealType& maxEdgeSpeed)
   // x(hL, hR, huL, huR, bL, bR, hNetUpdateLeft, hNetUpdateRight, huNetUpdateLeft, huNetUpdateRight, maxEdgeSpeed);
 }
 
-/**
- * @brief Computation of the wave speed. Dealing also with supersonic problems
- */
+
 void Solvers::FWaveSolverStudent::calculateWaveSped(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]) {
   waveSpeedLeft = eigenvalues[0];
   waveSpeedRight = eigenvalues[1];
@@ -72,10 +66,6 @@ void Solvers::FWaveSolverStudent::calculateWaveSped(RealType& waveSpeedLeft, Rea
   }
 }
 
-
-/**
- * @brief Computation of the Net Updates for the left and right Height and left and right Momentum
- */
 void Solvers::FWaveSolverStudent::calculateNetUpdates(RealType& hNetUpdateLeft, RealType& hNetUpdateRight, RealType& huNetUpdateLeft, RealType& huNetUpdateRight,RealType alphas[2], RealType eigenvalues[2]) {
   if (eigenvalues[0] < 0) {
     hNetUpdateLeft += alphas[0];
@@ -93,12 +83,8 @@ void Solvers::FWaveSolverStudent::calculateNetUpdates(RealType& hNetUpdateLeft, 
     hNetUpdateRight += alphas[1];
     huNetUpdateRight += alphas[1]*eigenvalues[1];
   }
-
 }
 
-/**
- * @brief Computation of the Alphas. Later used for computing the net Updates
- */
 void Solvers::FWaveSolverStudent::computeAlphas(RealType alphas[2], RealType fluxDif[2], RealType eigenvalues[2]) {
   RealType inverseFactor = 1/(eigenvalues[1] - eigenvalues[0]);
   alphas[0] = eigenvalues[1]*fluxDif[0] - fluxDif[1];
@@ -107,21 +93,13 @@ void Solvers::FWaveSolverStudent::computeAlphas(RealType alphas[2], RealType flu
   alphas[1] *= inverseFactor;
 }
 
-/**
- * @brief Computation of the Delta of the Flux function
- */
 void Solvers::FWaveSolverStudent::computeFluxDifferences(RealType hL, RealType hR, RealType huL, RealType huR, RealType uL, RealType uR, RealType fluxDif[2]) {
-  RealType G = 9.81;
   fluxDif[0] = huR - huL;
   fluxDif[1] = huR*uR + 0.5*G*hR*hR - huL*uL - 0.5*G*hL*hL;
 }
 
-/**
- * @brief Computation of the Roe eigenvalues
- */
 void Solvers::FWaveSolverStudent::computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]) {
   // Compute hRoe and uRoe
-
   RealType hRoe = 0.5 * (hL + hR);
   RealType uRoe = (huL / std::sqrt(hL) + huR/std::sqrt(hR)) / (std::sqrt(hL) + std::sqrt(hR));
 

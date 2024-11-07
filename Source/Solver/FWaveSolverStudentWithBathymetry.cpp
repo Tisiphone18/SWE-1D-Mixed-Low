@@ -1,17 +1,14 @@
 /**
- * @file
+ * @file FWaveSolverStudentWithBathymetry.cpp
  */
- 
+
 #include <cassert>
 #include <cmath>
 #include <iostream>
 
 #include "FWaveSolverStudentWithBathymetry.hpp"
 
-/**
- * @brief Computation of the computeNetUpdates. Calls the functions to compute the eignevalues, flux differences, alphas, netUpdates and waveSpeed. 
- * Can handle bathymetry
- */
+
 void Solvers::FWaveSolverStudentWithBathymetry::computeNetUpdates(
 const RealType& hL, const RealType& hR,
 const RealType& huL, const RealType& huR,
@@ -59,9 +56,6 @@ RealType& maxEdgeSpeed)
   // x(hL, hR, huL, huR, bL, bR, hNetUpdateLeft, hNetUpdateRight, huNetUpdateLeft, huNetUpdateRight, maxEdgeSpeed);
 }
 
-/**
- * @brief Computation of the Roe eigenvalues
- */
 void Solvers::FWaveSolverStudentWithBathymetry::computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]) {
   // Compute hRoe and uRoe
 
@@ -74,9 +68,6 @@ void Solvers::FWaveSolverStudentWithBathymetry::computeEigenvalues(RealType hL, 
   eigenvalues[1] = uRoe + sqrtGHRoe;
 }
 
-/**
- * @brief Computation of the Delta of the Flux function. Includes the effect of the bathymetry psi.
- */
 void Solvers::FWaveSolverStudentWithBathymetry::computeFluxDifferences(RealType hL, RealType hR, RealType huL, RealType huR, RealType uL, RealType uR, RealType bL, RealType bR, RealType fluxDif[2]) {
   RealType G = 9.81;
   // Compute Psi for lux difference
@@ -86,9 +77,6 @@ void Solvers::FWaveSolverStudentWithBathymetry::computeFluxDifferences(RealType 
   fluxDif[1] -= psi;
 }
 
-/**
- * @brief Computation of the Alphas. Later used for computing the net Updates
- */
 void Solvers::FWaveSolverStudentWithBathymetry::computeAlphas(RealType alphas[2], RealType fluxDif[2], RealType eigenvalues[2]) {
   RealType inverseFactor = 1/(eigenvalues[1] - eigenvalues[0]);
   alphas[0] = eigenvalues[1]*fluxDif[0] - fluxDif[1];
@@ -97,9 +85,6 @@ void Solvers::FWaveSolverStudentWithBathymetry::computeAlphas(RealType alphas[2]
   alphas[1] *= inverseFactor;
 }
 
-/**
- * @brief Computation of the Net Updates for the left and right Height and left and right Momentum
- */
 void Solvers::FWaveSolverStudentWithBathymetry::calculateNetUpdates(RealType& hNetUpdateLeft, RealType& hNetUpdateRight, RealType& huNetUpdateLeft, RealType& huNetUpdateRight,RealType alphas[2], RealType eigenvalues[2]) {
   if (eigenvalues[0] < 0) {
     hNetUpdateLeft += alphas[0];
@@ -117,12 +102,8 @@ void Solvers::FWaveSolverStudentWithBathymetry::calculateNetUpdates(RealType& hN
     hNetUpdateRight += alphas[1];
     huNetUpdateRight += alphas[1]*eigenvalues[1];
   }
-
 }
 
-/**
- * @brief Computation of the wave speed. Dealing also with supersonic problems
- */
 void Solvers::FWaveSolverStudentWithBathymetry::calculateWaveSped(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]) {
   waveSpeedLeft = eigenvalues[0];
   waveSpeedRight = eigenvalues[1];
