@@ -36,6 +36,9 @@
 
 #include "VTKWriter.hpp"
 
+#include <cassert>
+#include <sstream>
+
 Writers::VTKWriter::VTKWriter(const std::string& basename, const RealType cellSize):
   basename_(basename),
   cellSize_(cellSize),

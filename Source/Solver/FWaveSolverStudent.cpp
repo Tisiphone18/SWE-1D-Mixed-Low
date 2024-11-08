@@ -1,13 +1,12 @@
 /**
  * @file FWaveSolverStudent.cpp
  */
- 
-#include <cassert>
-#include <cmath>
-#include <iostream>
 
 #include "FWaveSolverStudent.hpp"
 
+#include <cassert>
+#include <cmath>
+#include <iostream>
 
 void Solvers::FWaveSolverStudent::computeNetUpdates(
 const RealType& hL, const RealType& hR,

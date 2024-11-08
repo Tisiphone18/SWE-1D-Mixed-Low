@@ -3,12 +3,9 @@
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/matchers/catch_matchers_floating_point.hpp>
 
-#include "Scenarios/DamBreakScenario.hpp"
 #include "Solver/FWaveSolverStudent.hpp"
-#include "Blocks/WavePropagationBlock.hpp"
 #include "FWaveSolver.hpp"
 #include <random>
-//#include <catch2/catch.hpp>
 
 
 RealType testingValuesSteady[3][4] = {

@@ -3,6 +3,9 @@
  */
 #include "Parser.hpp"
 
+#include <sstream>
+#include <iostream>
+
 namespace Tools {
 
   Parser Parser::parser;

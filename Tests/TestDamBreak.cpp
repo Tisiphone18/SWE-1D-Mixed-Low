@@ -6,8 +6,6 @@
 
 #include "Blocks/WavePropagationBlock.hpp"
 #include "catch2/internal/catch_reporter_spec_parser.hpp"
-#include "Scenarios/DamBreakScenario.hpp"
-#include "Scenarios/ShockRareProblemScenario.hpp"
 #include "Tools/Parser.hpp"
 
 

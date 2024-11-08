@@ -5,9 +5,8 @@
  * @date 01.11.2024
  */
 
-#include <cassert>
 #include "SubcriticalFlowScenario.hpp"
-#include <iostream>
+
 
 Scenarios::SubcriticalFlowScenario::SubcriticalFlowScenario(unsigned int size):
   size_(size) {}

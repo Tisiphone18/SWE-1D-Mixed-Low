@@ -9,7 +9,6 @@
 #pragma once
 
 #include "Scenario.hpp"
-#include "Tools/RealType.hpp"
 
 namespace Scenarios {
 

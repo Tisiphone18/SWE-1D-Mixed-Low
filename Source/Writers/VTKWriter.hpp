@@ -36,9 +36,7 @@
 
 #pragma once
 
-#include <cassert>
 #include <fstream>
-#include <sstream>
 #include <string>
 
 #include "Tools/RealType.hpp"

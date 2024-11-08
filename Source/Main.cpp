@@ -35,7 +35,7 @@
  */
 
 #include <cstring>
-#include <fenv.h>
+#include <cfenv>
 
 #include "Blocks/WavePropagationBlock.hpp"
 #include "Scenarios/DamBreakScenario.hpp"

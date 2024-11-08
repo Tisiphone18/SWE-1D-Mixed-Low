@@ -5,10 +5,7 @@
  * @date 01.11.2024
  */
 
-
-#include <cassert>
 #include "SupercriticalFlowScenario.hpp"
-#include <iostream>
 
 Scenarios::SupercriticalFlowScenario::SupercriticalFlowScenario(unsigned int size):
   size_(size) {}
