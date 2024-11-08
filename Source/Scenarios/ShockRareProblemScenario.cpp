@@ -8,6 +8,7 @@
 #include "ShockRareProblemScenario.hpp"
 
 #include <cassert>
+#include <bits/stdc++.h>
 
 Scenarios::ShockRareProblemScenario::ShockRareProblemScenario(const RealType width, const unsigned int size, const unsigned int pos_of_problem, const RealType h, const RealType huL):
   width_(width),
@@ -32,5 +33,9 @@ RealType Scenarios::ShockRareProblemScenario::getMomentum(unsigned int pos) cons
     return huL_;
   }
   return -huL_;
+}
+
+RealType Scenarios::ShockRareProblemScenario::getBathymetry(unsigned int pos) const {
+  return -h_;
 }
 

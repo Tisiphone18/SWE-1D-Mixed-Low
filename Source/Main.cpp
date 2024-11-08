@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
   for (unsigned int i = 0; i < args.getSize() + 2; i++) {
     h[i] = scenario->getHeight(i);
     hu[i] = scenario->getMomentum(i);
-    b[i] = -scenario->getHeight(i);
+    b[i] = scenario->getBathymetry(i);
   }
 
   // Create a writer that is responsible printing out values

@@ -49,6 +49,11 @@ ShockRareProblemScenario(RealType width, unsigned int size, unsigned int pos_of_
      * @return Initial momentum of water (hu) at position pos
      */
     RealType getMomentum(unsigned int pos) const override;
+
+    /**
+     * @return Bathymetry (b) at position pos
+     */
+    RealType getBathymetry(unsigned int pos) const override;
   };
 
 } // namespace Scenarios
