@@ -48,7 +48,7 @@ RealType& maxEdgeSpeed)
   // Set wave speeds according to signs of eigenvalues
   RealType waveSpeedLeft = 0.0;
   RealType waveSpeedRight = 0.0;
-  calculateWaveSped(waveSpeedLeft, waveSpeedRight, eigenvalues);
+  calculateWaveSpeed(waveSpeedLeft, waveSpeedRight, eigenvalues);
   // Compute the maximum speed
   maxEdgeSpeed = std::fmax(std::abs(eigenvalues[0]), std::abs(eigenvalues[1]));
 
@@ -56,7 +56,7 @@ RealType& maxEdgeSpeed)
 }
 
 
-void Solvers::FWaveSolverStudent::calculateWaveSped(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]) {
+void Solvers::FWaveSolverStudent::calculateWaveSpeed(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]) {
   waveSpeedLeft = eigenvalues[0];
   waveSpeedRight = eigenvalues[1];
   if (eigenvalues[0] < 0 && eigenvalues[1] < 0) {

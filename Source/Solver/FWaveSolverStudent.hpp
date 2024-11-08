@@ -61,7 +61,7 @@ namespace Solvers {
      * @param waveSpeedRight 
      * @param eigenvalues Array of eigenvalues.
      */
-    void calculateWaveSped(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]);
+    void calculateWaveSpeed(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]);
 
     /**
      * @brief Computation of the Net Updates for the left and right Height and left and right Momentum

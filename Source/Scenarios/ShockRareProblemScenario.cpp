@@ -1,9 +1,6 @@
 /**
  * @file
  */
-//
-// Created by johan on 20.10.24.
-//
 
 #include "ShockRareProblemScenario.hpp"
 
@@ -16,7 +13,7 @@ Scenarios::ShockRareProblemScenario::ShockRareProblemScenario(const RealType wid
   pos_of_problem_(pos_of_problem),
   h_(h),
   huL_(huL) {
-    assert(width_ > 0.0 && "simulation width must be greaterthan zero");
+    assert(width_ > 0.0 && "simulation width must be greater than zero");
     assert(h > 0.0 && "height must be greater than zero");
     assert(huL != 0.0 && "momentum cannot be zero");
     assert(pos_of_problem_ < size_ && "position of problem must be in [0, size)");

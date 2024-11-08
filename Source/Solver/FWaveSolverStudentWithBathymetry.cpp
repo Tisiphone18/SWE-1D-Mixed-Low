@@ -64,7 +64,7 @@ RealType& maxEdgeSpeed)
 
   RealType waveSpeedLeft = 0;
   RealType waveSpeedRight = 0;
-  calculateWaveSped(waveSpeedLeft, waveSpeedRight, eigenvalues);
+  calculateWaveSpeed(waveSpeedLeft, waveSpeedRight, eigenvalues);
   // Set wave speeds according to signs of eigenvalues
   
   // Compute the maximum speed
@@ -133,7 +133,7 @@ void Solvers::FWaveSolverStudentWithBathymetry::calculateNetUpdates(RealType& hN
   }
 }
 
-void Solvers::FWaveSolverStudentWithBathymetry::calculateWaveSped(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]) {
+void Solvers::FWaveSolverStudentWithBathymetry::calculateWaveSpeed(RealType& waveSpeedLeft, RealType& waveSpeedRight, RealType eigenvalues[2]) {
   waveSpeedLeft = eigenvalues[0];
   waveSpeedRight = eigenvalues[1];
   if (eigenvalues[0] < 0 && eigenvalues[1] < 0) {
