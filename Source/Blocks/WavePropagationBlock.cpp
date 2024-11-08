@@ -85,13 +85,12 @@ RealType Blocks::WavePropagationBlock::computeNumericalFluxes() {
     if (maxEdgeSpeed > maxWaveSpeed) {
       maxWaveSpeed = maxEdgeSpeed;
     }
-
   }
 
   
 
   // Compute CFL condition
-  RealType maxTimeStep = cellSize_ / maxWaveSpeed * RealType(0.4);
+  RealType maxTimeStep = maxWaveSpeed > 0.0 ? cellSize_ / maxWaveSpeed * RealType(0.4) : std::numeric_limits<RealType>::max();
 
   return maxTimeStep;
 }
