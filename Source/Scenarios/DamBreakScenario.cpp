@@ -68,5 +68,6 @@ RealType Scenarios::DamBreakScenario::getMomentum(unsigned int pos) const {
 }
 
 RealType Scenarios::DamBreakScenario::getBathymetry(unsigned int pos) const {
+  (void) pos;
   return -std::max(hL_, hR_);
 }

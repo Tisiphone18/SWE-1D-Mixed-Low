@@ -19,6 +19,8 @@ RealType& huNetUpdateLeft,
 RealType& huNetUpdateRight,
 RealType& maxEdgeSpeed)
 {
+  (void) bL;
+  (void) bR;
   // Compute velocity for left and right sides
   assert(hL > 0 && "hL must be greater than zero to avoid division by zero.");
   assert(hR > 0 && "hR must be greater than zero to avoid division by zero.");

@@ -45,7 +45,6 @@ RealType testingInputsNegativeEigenvalues[3][4] = {
 
 TEST_CASE("Computing Eigenvalues"){
     Solvers::FWaveSolverStudent our_solver;
-    double g = 9.81;
     SECTION("Computing Eigenvalues") {
         RealType eigenvalues[2] = { 0.0, 0.0 };
         our_solver.computeEigenvalues(testingValuesEigenvalues[0][0], testingValuesEigenvalues[0][1], testingValuesEigenvalues[0][2], testingValuesEigenvalues[0][3], eigenvalues);

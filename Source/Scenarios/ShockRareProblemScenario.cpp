@@ -22,6 +22,7 @@ Scenarios::ShockRareProblemScenario::ShockRareProblemScenario(const RealType wid
 RealType Scenarios::ShockRareProblemScenario::getCellSize() const { return width_ / size_; }
 
 RealType Scenarios::ShockRareProblemScenario::getHeight(unsigned int pos) const {
+  (void) pos;
   return h_;
 }
 
@@ -33,6 +34,7 @@ RealType Scenarios::ShockRareProblemScenario::getMomentum(unsigned int pos) cons
 }
 
 RealType Scenarios::ShockRareProblemScenario::getBathymetry(unsigned int pos) const {
+  (void) pos;
   return -h_;
 }
 

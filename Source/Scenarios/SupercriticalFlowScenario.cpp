@@ -16,12 +16,12 @@ Scenarios::SupercriticalFlowScenario::SupercriticalFlowScenario(unsigned int siz
 RealType Scenarios::SupercriticalFlowScenario::getCellSize() const { return 25.0 / size_; } // TODO RealType(25.0)?
 
 RealType Scenarios::SupercriticalFlowScenario::getHeight(unsigned int pos) const {
-  // TODO assert x \el [0,size_]? imo the user should be aware of size_, as this is passed onto the constructor
+  (void) pos;
   return -getBathymetry(pos);
 }
 
 RealType Scenarios::SupercriticalFlowScenario::getMomentum(unsigned int pos) const {
-  // TODO assert x \el [0,size_]? imo the user should be aware of size_, as this is passed onto the constructor
+  (void) pos;
   return 0.18;
 }
 

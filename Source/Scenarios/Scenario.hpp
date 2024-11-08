@@ -41,6 +41,7 @@ namespace Scenarios {
      * @return Bathymetry (b) at position pos
      */
     virtual RealType getBathymetry(unsigned int pos) const {
+      (void) pos;
       return 0.0;
     };
   };

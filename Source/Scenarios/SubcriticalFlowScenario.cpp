@@ -19,6 +19,7 @@ RealType Scenarios::SubcriticalFlowScenario::getHeight(unsigned int pos) const {
 }
 
 RealType Scenarios::SubcriticalFlowScenario::getMomentum(unsigned int pos) const {
+  (void) pos;
   return 4.42;
 }
 

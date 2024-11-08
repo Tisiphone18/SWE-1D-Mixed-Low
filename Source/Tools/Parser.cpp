@@ -72,6 +72,7 @@ namespace Tools {
     for (const auto& values : parsedData) {
       printValues(values);
     }
+    return {};
   }
 
   void Parser::printValues(const std::vector<double>& values) {
