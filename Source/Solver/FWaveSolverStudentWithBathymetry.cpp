@@ -10,18 +10,35 @@
 
 
 void Solvers::FWaveSolverStudentWithBathymetry::computeNetUpdates(
-const RealType& hL, const RealType& hR,
-const RealType& huL, const RealType& huR,
-const RealType& bL, const RealType& bR,
+const RealType& hLTrueValue, const RealType& hRTrueValue,
+const RealType& huLTrueValue, const RealType& huRTrueValue,
+const RealType& bLTrueValue, const RealType& bRTrueValue,
 RealType& hNetUpdateLeft,
 RealType& hNetUpdateRight,
 RealType& huNetUpdateLeft,
 RealType& huNetUpdateRight,
 RealType& maxEdgeSpeed)
 {
+  // Initialize local variables so that altering h, hu, b for reflective boundary conditions doesn't change original data
+  RealType hL = hLTrueValue;
+  RealType hR = hRTrueValue;
+  RealType huL = huLTrueValue;
+  RealType huR = huRTrueValue;
+  RealType bL = bLTrueValue;
+  RealType bR = bRTrueValue;
+
+  // set h, hu, b if at least one cell is dry
+  applyBoundaryCondition(hL, hR, huL, huR, bL, bR);
+
+  // Don't do anything if both cells are dry
+  if (bL >= 0.0 && bR >= 0.0) {
+    hNetUpdateLeft = hNetUpdateRight = huNetUpdateLeft = huNetUpdateRight = 0.0;
+    return;
+  }
+
   // Compute velocity for left and right sides
-  assert(hL > 0 && "hL must be greater than zero to avoid division by zero.");
-  assert(hR > 0 && "hR must be greater than zero to avoid division by zero.");
+  assert(hL > 0.0 && "hL must be greater than zero to avoid division by zero.");
+  assert(hR > 0.0 && "hR must be greater than zero to avoid division by zero.");
   RealType uL = huL/hL;
   RealType uR = huR/hR;
 
@@ -54,6 +71,18 @@ RealType& maxEdgeSpeed)
   maxEdgeSpeed = std::fmax(std::abs(eigenvalues[0]), std::abs(eigenvalues[1]));
 
   // x(hL, hR, huL, huR, bL, bR, hNetUpdateLeft, hNetUpdateRight, huNetUpdateLeft, huNetUpdateRight, maxEdgeSpeed);
+}
+
+void Solvers::FWaveSolverStudentWithBathymetry::applyBoundaryCondition(RealType& hL, RealType& hR, RealType& huL, RealType& huR, RealType& bL, RealType& bR) {
+  if (bL >= 0.0) {
+    hL = hR;
+    huL = -huR;
+    bL = bR;
+  } else if (bR >= 0.0) {
+    hR = hL;
+    huR = -huL;
+    bR = bL;
+  }
 }
 
 void Solvers::FWaveSolverStudentWithBathymetry::computeEigenvalues(RealType hL, RealType hR, RealType huL, RealType huR, RealType eigenvalues[2]) {
