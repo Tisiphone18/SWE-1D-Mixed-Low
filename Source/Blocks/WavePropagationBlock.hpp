@@ -96,8 +96,6 @@ namespace Blocks {
 
 
     /** The solver used in computeNumericalFluxes */
-    Solvers::FWaveSolver<RealType> solver_;
-    Solvers::FWaveSolverStudent our_solver;
     Solvers::FWaveSolverStudentWithBathymetry solver_with_bathymetry_;
 
   public:
