@@ -1,5 +1,5 @@
 /**
- * @file FWaveSolverStudent.hpp
+ * @headerfile FWaveSolverStudent.hpp
  */
 
 #pragma once

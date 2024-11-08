@@ -1,5 +1,5 @@
 /**
- * @file
+ * @headerfile Scenario.hpp
  */
 //
 // Created by johan on 23.10.24.
@@ -11,6 +11,12 @@
 
 namespace Scenarios {
 
+  /**
+   * @class Scenario
+   *
+   * is abstract class for scenarios
+   *
+   */
   class Scenario {
 
   public:

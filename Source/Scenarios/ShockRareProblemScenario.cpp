@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file ShockRareProblemScenario.cpp
  */
 
 #include "ShockRareProblemScenario.hpp"

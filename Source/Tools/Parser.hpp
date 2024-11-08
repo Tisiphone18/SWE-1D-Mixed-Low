@@ -1,5 +1,6 @@
 /**
-* @file
+* @headerfile Parser.hpp
+*
 *  CSV Parser, part of our own SWE1D tools
 */
 

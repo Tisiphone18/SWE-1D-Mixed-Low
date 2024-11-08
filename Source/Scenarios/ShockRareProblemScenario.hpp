@@ -1,9 +1,6 @@
 /**
- * @file
+ * @headerfile ShockRareProblemScenario.hpp
  */
-//
-// Created by johan on 20.10.24.
-//
 #pragma once
 
 #include "Scenario.hpp"
