@@ -4,9 +4,6 @@
 
 #pragma once
 
-#ifndef FWAVESOLVERV2_H
-#define FWAVESOLVERV2_H
-
 #include "Tools/RealType.hpp"
 
 namespace Solvers {
@@ -98,5 +95,3 @@ namespace Solvers {
     void computeFluxDifferences(RealType hL, RealType hR, RealType huL, RealType huR, RealType uL, RealType uR, RealType fluxDif[2]);
   };
 }
-
-#endif // FWAVESOLVERV2_H
