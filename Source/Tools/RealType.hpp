@@ -1,5 +1,5 @@
 /**
- * @headerfile RealType.hpp
+ * @file RealType.hpp
  *
  *  This file is part of SWE1D
  *

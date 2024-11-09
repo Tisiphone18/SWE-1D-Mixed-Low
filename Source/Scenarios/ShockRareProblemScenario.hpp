@@ -1,5 +1,5 @@
 /**
- * @headerfile ShockRareProblemScenario.hpp
+ * @file ShockRareProblemScenario.hpp
  */
 #pragma once
 

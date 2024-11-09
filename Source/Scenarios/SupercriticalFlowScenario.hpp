@@ -1,5 +1,5 @@
 /**
- * @headerfile SupercriticalFlowScenario.hpp
+ * @file SupercriticalFlowScenario.hpp
  *
  * @author Group 2 (Jonathan)
  * @date 01.11.2024
