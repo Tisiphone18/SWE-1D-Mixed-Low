@@ -98,7 +98,6 @@ void Solvers::FWaveSolverStudentWithBathymetry::computeEigenvalues(RealType hL, 
 }
 
 void Solvers::FWaveSolverStudentWithBathymetry::computeFluxDifferences(RealType hL, RealType hR, RealType huL, RealType huR, RealType uL, RealType uR, RealType bL, RealType bR, RealType fluxDif[2]) {
-  RealType G = 9.81;
   // Compute Psi for lux difference
   RealType psi = -0.5*G*(bR - bL)*(hL + hR);
   fluxDif[0] = huR - huL;
