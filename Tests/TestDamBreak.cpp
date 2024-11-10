@@ -5,7 +5,6 @@
 #include <random>
 
 #include "Blocks/WavePropagationBlock.hpp"
-#include "catch2/internal/catch_reporter_spec_parser.hpp"
 #include "Tools/Parser.hpp"
 
 
