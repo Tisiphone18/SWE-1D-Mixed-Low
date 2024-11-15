@@ -1,5 +1,6 @@
 /**
- * @file
+ * @file RealType.hpp
+ *
  *  This file is part of SWE1D
  *
  *  SWE1D is free software: you can redistribute it and/or modify

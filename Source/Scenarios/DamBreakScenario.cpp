@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file DamBreakScenario.cpp
  *  This file is part of SWE1D
  *
  *  SWE1D is free software: you can redistribute it and/or modify
@@ -37,6 +37,7 @@
 #include "DamBreakScenario.hpp"
 
 #include <cassert>
+#include <bits/stdc++.h>
 
 Scenarios::DamBreakScenario::DamBreakScenario(const RealType width, unsigned int size, RealType hL, RealType hR, RealType uR):
   width_(width),
@@ -64,4 +65,9 @@ RealType Scenarios::DamBreakScenario::getMomentum(unsigned int pos) const {
     return 0.0;
   }
   return hR_*uR_;
+}
+
+RealType Scenarios::DamBreakScenario::getBathymetry(unsigned int pos) const {
+  (void) pos;
+  return -std::max(hL_, hR_);
 }

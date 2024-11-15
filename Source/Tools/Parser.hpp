@@ -1,13 +1,13 @@
 /**
-* @file
+* @file Parser.hpp
+*
 *  CSV Parser, part of our own SWE1D tools
 */
 
 #pragma once
 
-#include <iostream>
+
 #include <fstream>
-#include <sstream>
 #include <vector>
 #include <string>
 #include "RealType.hpp"

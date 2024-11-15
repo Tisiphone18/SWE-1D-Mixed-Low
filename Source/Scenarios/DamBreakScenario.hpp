@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file DamBreakScenario.hpp
  *  This file is part of SWE1D
  *
  *  SWE1D is free software: you can redistribute it and/or modify
@@ -37,7 +37,6 @@
 #pragma once
 
 #include "Scenario.hpp"
-#include "Tools/RealType.hpp"
 
 namespace Scenarios {
 
@@ -80,6 +79,11 @@ DamBreakScenario(RealType width, unsigned int size, RealType hL, RealType hR, Re
      * @return Initial momentum of water (hu) at position pos
      */
     RealType getMomentum(unsigned int pos) const override;
+
+    /**
+     * @return Bathymetry (b) at position pos
+     */
+    RealType getBathymetry(unsigned int pos) const override;
   };
 
 } // namespace Scenarios

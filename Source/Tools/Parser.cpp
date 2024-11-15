@@ -1,7 +1,10 @@
 /**
- * @file
+ * @file Parser.cpp
  */
 #include "Parser.hpp"
+
+#include <sstream>
+#include <iostream>
 
 namespace Tools {
 
@@ -72,6 +75,7 @@ namespace Tools {
     for (const auto& values : parsedData) {
       printValues(values);
     }
+    return {};
   }
 
   void Parser::printValues(const std::vector<double>& values) {

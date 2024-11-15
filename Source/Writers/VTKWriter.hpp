@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file VTKWriter.hpp
  *  This file is part of SWE1D
  *
  *  SWE1D is free software: you can redistribute it and/or modify
@@ -36,9 +36,7 @@
 
 #pragma once
 
-#include <cassert>
 #include <fstream>
-#include <sstream>
 #include <string>
 
 #include "Tools/RealType.hpp"
@@ -75,7 +73,7 @@ namespace Writers {
      *
      * @param size Number of cells (without boundary values)
      */
-    void write(const RealType time, const RealType* h, const RealType* hu, unsigned int size);
+    void write(const RealType time, const RealType* h, const RealType* hu, const RealType* b, unsigned int size);
   };
 
 } // namespace Writers

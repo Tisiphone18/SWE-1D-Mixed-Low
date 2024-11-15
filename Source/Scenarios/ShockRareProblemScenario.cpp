@@ -1,13 +1,11 @@
 /**
- * @file
+ * @file ShockRareProblemScenario.cpp
  */
-//
-// Created by johan on 20.10.24.
-//
 
 #include "ShockRareProblemScenario.hpp"
 
 #include <cassert>
+#include <bits/stdc++.h>
 
 Scenarios::ShockRareProblemScenario::ShockRareProblemScenario(const RealType width, const unsigned int size, const unsigned int pos_of_problem, const RealType h, const RealType huL):
   width_(width),
@@ -15,15 +13,16 @@ Scenarios::ShockRareProblemScenario::ShockRareProblemScenario(const RealType wid
   pos_of_problem_(pos_of_problem),
   h_(h),
   huL_(huL) {
-    assert(width_ > 0.0 && "simulation width must be greaterthan zero");
+    assert(width_ > 0.0 && "simulation width must be greater than zero");
     assert(h > 0.0 && "height must be greater than zero");
     assert(huL != 0.0 && "momentum cannot be zero");
-    assert(pos_of_problem_ < size_ && "position of problem must be in [0, size)");
+    assert(pos_of_problem_ <= size_+2 && "position of problem must be in [0, size+2]");
 }
 
 RealType Scenarios::ShockRareProblemScenario::getCellSize() const { return width_ / size_; }
 
 RealType Scenarios::ShockRareProblemScenario::getHeight(unsigned int pos) const {
+  (void) pos;
   return h_;
 }
 
@@ -32,5 +31,10 @@ RealType Scenarios::ShockRareProblemScenario::getMomentum(unsigned int pos) cons
     return huL_;
   }
   return -huL_;
+}
+
+RealType Scenarios::ShockRareProblemScenario::getBathymetry(unsigned int pos) const {
+  (void) pos;
+  return -h_;
 }
 

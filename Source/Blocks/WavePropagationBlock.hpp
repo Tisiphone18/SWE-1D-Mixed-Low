@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file WavePropagationBlock.hpp
  *  This file is part of SWE1D
  *
  *  SWE1D is free software: you can redistribute it and/or modify
@@ -38,6 +38,7 @@
 
 #include "FWaveSolver.hpp"
 #include "Solver/FWaveSolverStudent.hpp"
+#include "Solver/FWaveSolverStudentWithBathymetry.hpp"
 #include "Tools/RealType.hpp"
 
 namespace Blocks {
@@ -70,9 +71,15 @@ namespace Blocks {
    * </pre>
    */
   class WavePropagationBlock {
+  public:
+    enum BoundaryCondition {
+      ReflectingBoundary,
+      OutflowBoundary
+    };
   private:
     RealType* h_;
     RealType* hu_;
+    RealType* b_;
 
     RealType* hNetUpdatesLeft_;
     RealType* hNetUpdatesRight_;
@@ -84,16 +91,19 @@ namespace Blocks {
 
     RealType cellSize_;
 
+    BoundaryCondition leftBoundary_;
+    BoundaryCondition rightBoundary_;
+
+
     /** The solver used in computeNumericalFluxes */
-    Solvers::FWaveSolver<RealType> solver_;
-    Solvers::FWaveSolverStudent our_solver;
+    Solvers::FWaveSolverStudentWithBathymetry solver_with_bathymetry_;
 
   public:
     /**
      * @param size Domain size (= number of cells) without ghost cells
      * @param cellSize Size of one cell
      */
-    WavePropagationBlock(RealType* h, RealType* hu, unsigned int size, RealType cellSize);
+    WavePropagationBlock(RealType* h, RealType* hu, RealType* b, unsigned int size, RealType cellSize);
     ~WavePropagationBlock();
 
     /**
@@ -111,10 +121,26 @@ namespace Blocks {
     void updateUnknowns(RealType dt);
 
     /**
-     * Updates h and hu according to the outflow condition to both
+     * Updates h, hu and b according to the set condition on both
      * boundaries
      */
-    void setOutflowBoundaryConditions();
+    void applyBoundaryConditions();
+
+    /**
+     * Sets left boundary condition to parameter
+     *
+     * Do NOT call when simulation is running, will result in unexpected behaviour
+     * @param condition boundary condition, that should be implemented on the left border
+     */
+    void setLeftBoundaryCondition(BoundaryCondition condition);
+
+    /**
+     * Sets right boundary condition to parameter
+     *
+     * Do NOT call when simulation is running, will result in unexpected behaviour
+     * @param condition boundary condition, that should be implemented on the right border
+     */
+    void setRightBoundaryCondition(BoundaryCondition condition);
   };
 
 } // namespace Blocks
