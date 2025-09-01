@@ -70,3 +70,21 @@ Instead of using `make`, run `VERBOSE=1 make`. You can also run `make -n` to inv
 ### How can I see the test output?
 
 Instead of using `make test`, run `ctest --verbose`.
+
+# Experiments with Low and Mixed Precision Riemann Solvers
+
+This repository contains experimental code for testing and evaluating **Riemann solvers** under different numerical precisions (e.g. low precision, mixed precision, half precision).  
+The purpose is to explore solver behavior and stability across a range of configurations.
+
+**Note:**  
+This is not a polished software package. The code is provided as-is for experimentation.  
+Users are expected to **assemble and adapt the code components as they see fit** to design and run their own tests.
+
+---
+
+## Description
+- Focuses on evaluating **low and mixed precision arithmetic** in Riemann solvers.  
+- Provides a collection of test cases and experimental setups.  
+- Intended as a **research sandbox**, not a ready-to-use library.  
+
+
