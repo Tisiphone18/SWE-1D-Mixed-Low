@@ -71,3 +71,22 @@ html/*
 .DS_Store
 .vscode/*
 .idea
+
+# --- Python environment ---
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.env
+.venv/
+
+# --- Logs / temp ---
+*.log
+*.tmp
+tmp/
+temp/
+
+# --- Build / generated data ---
+video_frames*/
